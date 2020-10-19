@@ -1,12 +1,17 @@
 import React from "react";
-import Index from "./components/index";
+import { Route, BrowserRouter as Router } from "react-router-dom";
+import Index from "./scenes/Index";
+import Guest from "./scenes/Guest.js";
 import "bulma/css/bulma.css";
 import "./App.css";
 
 function App() {
   return (
     <div className="App">
-      <Index />
+      <Router>
+        <Route path="/" exact component={Index} />
+        <Route path="/guest" exact component={Guest} />
+      </Router>
     </div>
   );
 }
