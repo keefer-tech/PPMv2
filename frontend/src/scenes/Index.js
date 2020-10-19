@@ -1,8 +1,54 @@
 import React from "react";
 import MainTitle from "../components/Headers/MainTitle";
 import HeroButton from "../components/Buttons/HeroButton";
+import axios from 'axios'
 
 export default function Index() {
+
+  async function getPlaylists() {
+
+    try {
+      let res = await axios({
+        method: "post",
+        url: "http://localhost:5000/compare",
+        headers: {},
+        data: {
+          username: "1231189291",
+          friend_username: "1231189291",
+          simon: "1231189291",
+          tyler: "tylerhall12",
+          keefer: "12179586444",
+          phil: "22nllj3rpfhvzlgt5hin5aqra",
+        },
+      });
+      console.log(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function getFriendPlaylist() {
+
+    try {
+      let res = await axios({
+        method: "post",
+        url: "http://localhost:5000/friend/playlist",
+        headers: {},
+        data: {
+          username: "1231189291",
+          friend_username: "1231189291",
+          simon: "1231189291",
+          tyler: "tylerhall12",
+          keefer: "12179586444",
+          phil: "22nllj3rpfhvzlgt5hin5aqra",
+        },
+      });
+      console.log(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div>
       <section>
@@ -19,6 +65,9 @@ export default function Index() {
                     name={"Log in"}
                   />
                   <HeroButton href={""} colour={"outlined"} name={"Sign up"} />
+
+                  <button onClick={getPlaylists}>get my plalists</button>
+                  <button onClick={getFriendPlaylist}>get friends playlist</button>
                 </div>
               </div>
             </div>

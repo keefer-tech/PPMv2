@@ -1,9 +1,10 @@
 require("dotenv").config();
-
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
 
 const getAuthToken = async () => {
   // a 64bit encoded "client_id:client_secret"
-  const encodedSecret = process.env.ENCODED_SECRET
+  const encodedSecret = new ArrayBuffer(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64')
 
   console.log(encodedSecret);
 

@@ -11,9 +11,11 @@ const REDIRECT_URI =
 const STATE_KEY = "spotify_auth_state";
 
 
-const { setOptions, generateRandomString } = require('../utils/utils');
+const { setOptions, generateRandomString, refreshAccessToken } = require('../utils/utils');
 const getAllData = require("../utils/utils.guest");
 const { addOrUpdateUser } = require("../utils/utils.model");
+
+
 
 
 // LOG THE USER INTO THEIR SPOTIFY ACCOUNT
@@ -63,8 +65,8 @@ router.get("/callback", function (req, res) {
       },
       headers: {
         Authorization:
-          "Basic " +
-          new Buffer(CLIENT_ID + ":" + CLIENT_SECRET).toString("base64"),
+          // "Basic " + new Buffer(CLIENT_ID + ":" + CLIENT_SECRET).toString("base64"),
+          "Basic " + Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64'),
       },
       json: true,
     };
@@ -96,15 +98,7 @@ router.get("/callback", function (req, res) {
           await addOrUpdateUser(user)
 
           // we can also pass the token to the browser to make requests from there
-          res.redirect(
-            `http://localhost:3000/${body.display_name}/?` +
-              querystring.stringify({
-                access_token: access_token,
-                refresh_token: refresh_token,
-              })
-          );
-
-          // res.send(access_token)
+          res.redirect(`http://localhost:3000/user`)
         });
 
       } else {
@@ -117,47 +111,19 @@ router.get("/callback", function (req, res) {
   }
 });
 
-router.get("/refresh_token", function (req, res) {
-
-  console.log('in refresh');
-  // requesting access token from refresh token
-  let refresh_token = req.query.refresh_token;
-  console.log(refresh_token);
-  let authOptions = {
-    url: "https://accounts.spotify.com/api/token",
-    headers: {
-      Authorization:
-        "Basic " +
-        new Buffer(CLIENT_ID + ":" + CLIENT_SECRET).toString("base64"),
-    },
-    form: {
-      grant_type: "refresh_token",
-      refresh_token: refresh_token,
-    },
-    json: true,
-  };
-
-  request.post(authOptions, function (error, response, body) {
-    if (!error && response.statusCode === 200) {
-      var access_token = body.access_token;
-      res.send({
-        access_token: access_token,
-      });
-    }
-  });
-});
-
 
 
 // GET FIRST 50 PLAYLISTS FROM AUTHORIZED USER
 
-router.get('/compare/:username/:access_token', (req, res) => {
+router.post('/compare', async (req, res) => {
 
   // get the username and access token from the params
-  let { username, access_token } = req.params
+  let { username } = req.body
+  let access_token = await refreshAccessToken(username)
+  let limit = 50
 
   // get the first 50 playlists from the user
-  let playListUrl = "https://api.spotify.com/v1/me/playlists?limit=50"
+  let playListUrl = `https://api.spotify.com/v1/me/playlists?limit=${limit}`
   let playListOptions = setOptions(playListUrl, access_token)
   let playlists = []
 
@@ -178,13 +144,16 @@ router.get('/compare/:username/:access_token', (req, res) => {
 
 // GET PUBLIC PLAYLISTS OF A FRIEND
 
-router.get('/friend/:username/:access_token', (req, res) => {
+router.post('/friend/playlist', async (req, res) => {
 
   // get the username and access token from the params
-  let { username, access_token } = req.params
+  // let { username, access_token } = req.params
+  let { username, friend_username } = req.body
+  let access_token = await refreshAccessToken(username)
+  let limit = 50
 
   // get the first 50 playlists from the user
-  let playListUrl = `https://api.spotify.com/v1/users/${username}/playlists?limit=50`
+  let playListUrl = `https://api.spotify.com/v1/users/${friend_username}/playlists?limit=${limit}`
   let playListOptions = setOptions(playListUrl, access_token)
   let friendPlaylists = []
 

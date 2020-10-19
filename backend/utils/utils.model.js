@@ -31,6 +31,16 @@ function addOrUpdateUser(user) {
   })
 }
 
+
+async function getUserFromDb(username) {
+  try {
+    return await UserModel.findOne({username})
+  } catch (error) {
+    console.log(`Error in getRefreshToken: ${error}`);
+  }
+}
+
 module.exports = {
-  addOrUpdateUser
+  addOrUpdateUser,
+  getUserFromDb
 }
