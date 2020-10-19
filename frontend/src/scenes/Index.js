@@ -7,13 +7,11 @@ export default function Index() {
   const [accessToken, setAccessToken] = useState();
 
   async function getPlaylists() {
-    let access_token =
-      "BQDBxhyH2vmqR8iKkWAwwbkosHJRayoVBiMYaJD-Vz5eluQL1G71AtC6c9jbB-eF_FqcmXUNLDaTGL7YOak_Z_Q3OWZ7yeOkimCJd3efdvWjtmKjBQos-QxE9A5p2K94JjgDsK9fs8pi0XbmJZloRMN3XKDnQ7vZk6QZmWPgNlZFl9KV7MRQ&refresh_token=AQDwHm8DcEa-MsdXKa6NnN_jBwo6Y1nWWTQEtC1uOQ5ou8rpZiNw0QVGdXyTXDHPIVyzJxitb-6ckSr2C0QDVzi4_g09ugaAMlh2DQ_yDk0hCpdqIA5sCkoEhprwXGHKAmc";
-    let username = "simo_sultan";
+    let username = "1231189291" // simon
 
     try {
       let res = await axios.get(
-        `http://localhost:5000/compare/${username}/${access_token}`
+        `http://localhost:5000/compare/${username}`
       );
       console.log(res.data);
     } catch (error) {
@@ -22,16 +20,14 @@ export default function Index() {
   }
 
   async function getFriendPlaylist() {
-    let access_token =
-      "BQDBxhyH2vmqR8iKkWAwwbkosHJRayoVBiMYaJD-Vz5eluQL1G71AtC6c9jbB-eF_FqcmXUNLDaTGL7YOak_Z_Q3OWZ7yeOkimCJd3efdvWjtmKjBQos-QxE9A5p2K94JjgDsK9fs8pi0XbmJZloRMN3XKDnQ7vZk6QZmWPgNlZFl9KV7MRQ&refresh_token=AQDwHm8DcEa-MsdXKa6NnN_jBwo6Y1nWWTQEtC1uOQ5ou8rpZiNw0QVGdXyTXDHPIVyzJxitb-6ckSr2C0QDVzi4_g09ugaAMlh2DQ_yDk0hCpdqIA5sCkoEhprwXGHKAmc";
     // let username = "22nllj3rpfhvzlgt5hin5aqra" // phil
-    let username = "12179586444"; // keefer
+    let friend_username = "12179586444"; // keefer
     // let username = "tylerhall12" // tyler
-    // let username = "1231189291" // simon
+    let username = "1231189291" // simon
 
     try {
       let res = await axios.get(
-        `http://localhost:5000/friend/${username}/${access_token}`
+        `http://localhost:5000/${username}/${friend_username}`
       );
       console.log(res.data);
     } catch (error) {
