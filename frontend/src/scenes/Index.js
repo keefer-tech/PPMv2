@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import MainTitle from "../components/Headers/MainTitle";
 import HeroButton from "../components/Buttons/HeroButton";
-import axios from "axios";
 
 export default function Index() {
   const [accessToken, setAccessToken] = useState()
