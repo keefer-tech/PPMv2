@@ -1,9 +1,12 @@
-import React from "react";
+// import React, { useState } from "react";
+import React, { useState } from "react";
 import MainTitle from "../components/Headers/MainTitle";
 import HeroButton from "../components/Buttons/HeroButton";
+import axios from 'axios'
 
 export default function Index() {
-  const [accessToken, setAccessToken] = useState()
+
+  // const [accessToken, setAccessToken] = useState()
 
   async function getPlaylists() {
 
@@ -28,6 +31,29 @@ export default function Index() {
 
     try {
       let res = await axios.get(`http://localhost:5000/friend/${username}/${access_token}`)
+      console.log(res.data);
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  async function getAllData() {
+
+    // let access_token = "BQDBxhyH2vmqR8iKkWAwwbkosHJRayoVBiMYaJD-Vz5eluQL1G71AtC6c9jbB-eF_FqcmXUNLDaTGL7YOak_Z_Q3OWZ7yeOkimCJd3efdvWjtmKjBQos-QxE9A5p2K94JjgDsK9fs8pi0XbmJZloRMN3XKDnQ7vZk6QZmWPgNlZFl9KV7MRQ&refresh_token=AQDwHm8DcEa-MsdXKa6NnN_jBwo6Y1nWWTQEtC1uOQ5ou8rpZiNw0QVGdXyTXDHPIVyzJxitb-6ckSr2C0QDVzi4_g09ugaAMlh2DQ_yDk0hCpdqIA5sCkoEhprwXGHKAmc"
+    // let username = "22nllj3rpfhvzlgt5hin5aqra" // phil
+    // let username = // keefer
+    // let username = "tylerhall12" // tyler
+    // let username = "1231189291" // simon
+
+    let userArray = ["1231189291", "12179586444"]
+
+    try {
+      let res = await axios({
+        method: 'post',
+        url: 'http://localhost:5000/guest/analyse',
+        data: { userArray }
+      });
+
       console.log(res.data);
     } catch (error) {
       console.error(error)
@@ -71,6 +97,7 @@ export default function Index() {
                   {/* <button onClick={getRefreshToken}>get new access token</button> */}
                   <button onClick={getPlaylists}>get my playlists</button>
                   <button onClick={getFriendPlaylist}>get friends playlist</button>
+                  <button onClick={getAllData}>get data</button>
 
                 </div>
               </div>
