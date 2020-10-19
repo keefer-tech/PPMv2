@@ -16,6 +16,8 @@ const getAllData = require("../utils/utils.guest");
 const { addOrUpdateUser } = require("../utils/utils.model");
 
 
+
+
 // LOG THE USER INTO THEIR SPOTIFY ACCOUNT
 
 router.get("/login", function (req, res) {
@@ -113,10 +115,10 @@ router.get("/callback", function (req, res) {
 
 // GET FIRST 50 PLAYLISTS FROM AUTHORIZED USER
 
-router.get('/compare/:username', async (req, res) => {
+router.post('/compare', async (req, res) => {
 
   // get the username and access token from the params
-  let { username } = req.params
+  let { username } = req.body
   let access_token = await refreshAccessToken(username)
   let limit = 50
 
@@ -142,11 +144,11 @@ router.get('/compare/:username', async (req, res) => {
 
 // GET PUBLIC PLAYLISTS OF A FRIEND
 
-router.get('/:username/:friend_username', async (req, res) => {
+router.post('/friend/playlist', async (req, res) => {
 
   // get the username and access token from the params
   // let { username, access_token } = req.params
-  let { username, friend_username } = req.params
+  let { username, friend_username } = req.body
   let access_token = await refreshAccessToken(username)
   let limit = 50
 

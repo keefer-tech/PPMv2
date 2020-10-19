@@ -1,17 +1,26 @@
 import React from "react";
 import MainTitle from "../components/Headers/MainTitle";
 import HeroButton from "../components/Buttons/HeroButton";
+import axios from 'axios'
 
 export default function Index() {
-  const [accessToken, setAccessToken] = useState();
 
   async function getPlaylists() {
-    let username = "1231189291" // simon
 
     try {
-      let res = await axios.get(
-        `http://localhost:5000/compare/${username}`
-      );
+      let res = await axios({
+        method: "post",
+        url: "http://localhost:5000/compare",
+        headers: {},
+        data: {
+          username: "1231189291",
+          friend_username: "1231189291",
+          simon: "1231189291",
+          tyler: "tylerhall12",
+          keefer: "12179586444",
+          phil: "22nllj3rpfhvzlgt5hin5aqra",
+        },
+      });
       console.log(res.data);
     } catch (error) {
       console.error(error);
@@ -19,15 +28,21 @@ export default function Index() {
   }
 
   async function getFriendPlaylist() {
-    // let username = "22nllj3rpfhvzlgt5hin5aqra" // phil
-    let friend_username = "12179586444"; // keefer
-    // let username = "tylerhall12" // tyler
-    let username = "1231189291" // simon
 
     try {
-      let res = await axios.get(
-        `http://localhost:5000/${username}/${friend_username}`
-      );
+      let res = await axios({
+        method: "post",
+        url: "http://localhost:5000/friend/playlist",
+        headers: {},
+        data: {
+          username: "1231189291",
+          friend_username: "1231189291",
+          simon: "1231189291",
+          tyler: "tylerhall12",
+          keefer: "12179586444",
+          phil: "22nllj3rpfhvzlgt5hin5aqra",
+        },
+      });
       console.log(res.data);
     } catch (error) {
       console.error(error);
