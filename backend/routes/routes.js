@@ -113,6 +113,10 @@ router.get("/callback", function (req, res) {
 
 
 
+
+// GET DATA FOR USER
+
+
 // GET FIRST 50 PLAYLISTS FROM AUTHORIZED USER
 
 router.post('/compare', async (req, res) => {
@@ -121,9 +125,10 @@ router.post('/compare', async (req, res) => {
   let { username } = req.body
   let access_token = await refreshAccessToken(username)
   let limit = 50
+  let offset = 0
 
   // get the first 50 playlists from the user
-  let playListUrl = `https://api.spotify.com/v1/me/playlists?limit=${limit}`
+  let playListUrl = `https://api.spotify.com/v1/me/playlists?limit=${limit}&offset=${offset}`
   let playListOptions = setOptions(playListUrl, access_token)
   let playlists = []
 
@@ -132,10 +137,13 @@ router.post('/compare', async (req, res) => {
     // get the wanted data out of the body sent back from spotify
     playlists = body.items.map(e => ({
         name: e.name, 
+        id: e.id, 
         link: e.href, 
         public: e.public, 
         trackLink: e.tracks.href
     }))
+
+    // send the current user playlists to the DB
     res.send(playlists)
   });
 })
@@ -151,9 +159,12 @@ router.post('/friend/playlist', async (req, res) => {
   let { username, friend_username } = req.body
   let access_token = await refreshAccessToken(username)
   let limit = 50
+  let offset = 0
+
+  // send the friends username to the DB
 
   // get the first 50 playlists from the user
-  let playListUrl = `https://api.spotify.com/v1/users/${friend_username}/playlists?limit=${limit}`
+  let playListUrl = `https://api.spotify.com/v1/users/${friend_username}/playlists?limit=${limit}&offset=${offset}`
   let playListOptions = setOptions(playListUrl, access_token)
   let friendPlaylists = []
 
@@ -163,14 +174,33 @@ router.post('/friend/playlist', async (req, res) => {
     // get the wanted data out of the body sent back from spotify
     friendPlaylists = body.items.map(e => ({
         name: e.name, 
+        id: e.id, 
         link: e.href, 
         public: e.public, 
         trackLink: e.tracks.href
     }))
+    // send the friends playlists to the DB
+
     res.send(friendPlaylists)
   });
 })
 
+
+
+// GET ALL SONGS FROM MULTIPLE PLAYLISTS
+// 
+
+
+
+
+
+
+
+
+
+
+
+// GUEST ACCOUNT ROUTES
 
 // GET publicLiked PLAYLISTS TO ANALYSE
 
