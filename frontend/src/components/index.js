@@ -1,6 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from 'axios'
 
-export default function index() {
+
+
+
+
+
+export default function Index() {
+
+  const [tokens, setTokens] = useState([])
+
+  async function spotifyLogin() {
+  
+    try {
+      let res = await axios.get('http://localhost:5000/login')
+      setTokens(res)
+      console.log(tokens);
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+
+
+
   return (
     <div>
       <section>
@@ -15,20 +38,23 @@ export default function index() {
               <div className="container has-text-centered">
                 <h1 className="title">Cool analytics with your music!</h1>
                 <div className="buttons are-large is-centered">
+                  {/* <a href="/login" className="button is-rounded is-primary" onClick={() => spotifyLogin()}> */}
                   <a href="" className="button is-rounded is-primary">
                     Login
                   </a>
-                  <a href="" className="button is-rounded is-outlined">
+                  <button onClick={() => spotifyLogin()}>login</button>
+                  <a href="/signup" className="button is-rounded is-outlined">
                     Sign Up
                   </a>
                 </div>
+                <div>{tokens}</div>
               </div>
             </div>
             <div className="column">
               <div className="container has-text-centred">
                 <h1 className="title">Basic visualizations of your music</h1>
                 <div className="buttons are-large is-centered">
-                  <a href="" className="button is-rounded is-dark">
+                  <a href="/guest" className="button is-rounded is-dark">
                     Guest
                   </a>
                 </div>
