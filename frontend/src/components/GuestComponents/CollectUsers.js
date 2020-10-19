@@ -6,6 +6,12 @@ import UserField from "../GuestComponents/UserField";
 export default function CollectUsers() {
   const [fields, setFields] = useState([<UserField />, <UserField />]);
 
+  function getUsers() {
+    let nodes = Array.from(document.getElementsByClassName("userField"));
+    let users = nodes.map((field) => field.value);
+    return users;
+  }
+
   function addField() {
     setFields((prevFields) => prevFields.concat(<UserField />));
   }
@@ -17,8 +23,39 @@ export default function CollectUsers() {
   }
 
   async function requestInfo() {
-    let res = await axios.get("http:localhost:5000/");
-    console.log({ res });
+    let users;
+    let res = await axios({
+      method: "post",
+      url: "http://localhost:5000/guest/analyse",
+      headers: {},
+      data: {
+        users: users,
+      },
+    });
+  }
+
+  async function requestInfo() {
+    let users;
+    let res = await axios({
+      method: "post",
+      url: "http://localhost:5000/guest/analyse",
+      headers: {},
+      data: {
+        users: users,
+      },
+    });
+  }
+
+  async function requestInfo() {
+    let users = getUsers;
+    let res = await axios({
+      method: "post",
+      url: "http://localhost:5000/guest/analyse",
+      headers: {},
+      data: {
+        users: users,
+      },
+    });
   }
 
   return (

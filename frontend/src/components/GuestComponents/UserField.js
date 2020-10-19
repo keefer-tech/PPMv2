@@ -1,15 +1,15 @@
 import React from "react";
 
-export default function UserField(props) {
+export default function UserField({ fieldChange }) {
   return (
     <div className="field">
       <label className="label">Spotify User ID</label>
       <div className="control">
         <input
-          id={props.uniq}
-          className="input is-rounded"
+          className="userField input is-rounded"
           type="text"
           placeholder="Text input"
+          onChange={fieldChange}
         ></input>
       </div>
     </div>
