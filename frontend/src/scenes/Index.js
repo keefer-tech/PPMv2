@@ -1,36 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import MainTitle from "../components/Headers/MainTitle";
 import HeroButton from "../components/Buttons/HeroButton";
+import axios from "axios";
 
 export default function Index() {
-  const [accessToken, setAccessToken] = useState()
+  const [accessToken, setAccessToken] = useState();
 
   async function getPlaylists() {
-
-    let access_token = "BQDBxhyH2vmqR8iKkWAwwbkosHJRayoVBiMYaJD-Vz5eluQL1G71AtC6c9jbB-eF_FqcmXUNLDaTGL7YOak_Z_Q3OWZ7yeOkimCJd3efdvWjtmKjBQos-QxE9A5p2K94JjgDsK9fs8pi0XbmJZloRMN3XKDnQ7vZk6QZmWPgNlZFl9KV7MRQ&refresh_token=AQDwHm8DcEa-MsdXKa6NnN_jBwo6Y1nWWTQEtC1uOQ5ou8rpZiNw0QVGdXyTXDHPIVyzJxitb-6ckSr2C0QDVzi4_g09ugaAMlh2DQ_yDk0hCpdqIA5sCkoEhprwXGHKAmc"
-    let username = "simo_sultan"
+    let access_token =
+      "BQDBxhyH2vmqR8iKkWAwwbkosHJRayoVBiMYaJD-Vz5eluQL1G71AtC6c9jbB-eF_FqcmXUNLDaTGL7YOak_Z_Q3OWZ7yeOkimCJd3efdvWjtmKjBQos-QxE9A5p2K94JjgDsK9fs8pi0XbmJZloRMN3XKDnQ7vZk6QZmWPgNlZFl9KV7MRQ&refresh_token=AQDwHm8DcEa-MsdXKa6NnN_jBwo6Y1nWWTQEtC1uOQ5ou8rpZiNw0QVGdXyTXDHPIVyzJxitb-6ckSr2C0QDVzi4_g09ugaAMlh2DQ_yDk0hCpdqIA5sCkoEhprwXGHKAmc";
+    let username = "simo_sultan";
 
     try {
-      let res = await axios.get(`http://localhost:5000/compare/${username}/${access_token}`)
+      let res = await axios.get(
+        `http://localhost:5000/compare/${username}/${access_token}`
+      );
       console.log(res.data);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 
   async function getFriendPlaylist() {
-
-    let access_token = "BQDBxhyH2vmqR8iKkWAwwbkosHJRayoVBiMYaJD-Vz5eluQL1G71AtC6c9jbB-eF_FqcmXUNLDaTGL7YOak_Z_Q3OWZ7yeOkimCJd3efdvWjtmKjBQos-QxE9A5p2K94JjgDsK9fs8pi0XbmJZloRMN3XKDnQ7vZk6QZmWPgNlZFl9KV7MRQ&refresh_token=AQDwHm8DcEa-MsdXKa6NnN_jBwo6Y1nWWTQEtC1uOQ5ou8rpZiNw0QVGdXyTXDHPIVyzJxitb-6ckSr2C0QDVzi4_g09ugaAMlh2DQ_yDk0hCpdqIA5sCkoEhprwXGHKAmc"
+    let access_token =
+      "BQDBxhyH2vmqR8iKkWAwwbkosHJRayoVBiMYaJD-Vz5eluQL1G71AtC6c9jbB-eF_FqcmXUNLDaTGL7YOak_Z_Q3OWZ7yeOkimCJd3efdvWjtmKjBQos-QxE9A5p2K94JjgDsK9fs8pi0XbmJZloRMN3XKDnQ7vZk6QZmWPgNlZFl9KV7MRQ&refresh_token=AQDwHm8DcEa-MsdXKa6NnN_jBwo6Y1nWWTQEtC1uOQ5ou8rpZiNw0QVGdXyTXDHPIVyzJxitb-6ckSr2C0QDVzi4_g09ugaAMlh2DQ_yDk0hCpdqIA5sCkoEhprwXGHKAmc";
     // let username = "22nllj3rpfhvzlgt5hin5aqra" // phil
-    let username = "12179586444" // keefer
+    let username = "12179586444"; // keefer
     // let username = "tylerhall12" // tyler
     // let username = "1231189291" // simon
 
     try {
-      let res = await axios.get(`http://localhost:5000/friend/${username}/${access_token}`)
+      let res = await axios.get(
+        `http://localhost:5000/friend/${username}/${access_token}`
+      );
       console.log(res.data);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 
@@ -70,8 +75,9 @@ export default function Index() {
                   {/* <button href="http://localhost:5000/refresh_token?refresh_token=AQCw7UoQ2OWi3Wz06KIicV3pVL92lwAbBYWZ4ZvY4waCr3T3we9RW7KWQ9w8ARWlzzWAcJiCrVtSSPYaR9mjigTsE0b36BCDKtJUtXqfQnwUVhl2tzAXjkUPJUya7o6loZk">get new access token</button> */}
                   {/* <button onClick={getRefreshToken}>get new access token</button> */}
                   <button onClick={getPlaylists}>get my playlists</button>
-                  <button onClick={getFriendPlaylist}>get friends playlist</button>
-
+                  <button onClick={getFriendPlaylist}>
+                    get friends playlist
+                  </button>
                 </div>
               </div>
             </div>
