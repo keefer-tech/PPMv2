@@ -1,7 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import MainTitle from "../components/Headers/MainTitle";
 import HeroButton from "../components/Buttons/HeroButton";
-export default function index() {
+import axios from 'axios'
+
+
+
+
+export default function Index() {
+
+  const [tokens, setTokens] = useState([])
+
+  async function spotifyLogin() {
+  
+    try {
+      let res = await axios.get('http://localhost:5000/login')
+      setTokens(res)
+      console.log(tokens);
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+
   return (
     <div>
       <section>
@@ -12,9 +32,10 @@ export default function index() {
               <div className="container has-text-centered">
                 <h1 className="title">Cool analytics with your music!</h1>
                 <div className="buttons are-large is-centered">
-                  <HeroButton href={""} colour={"primary"} name={"Log in"} />
+                  <HeroButton href={""} colour={"primary"} name={"Log in"} onclick={() => spotifyLogin()}/>
                   <HeroButton href={""} colour={"outlined"} name={"Sign up"} />
                 </div>
+                <div>{tokens}</div>
               </div>
             </div>
             <div className="column">
