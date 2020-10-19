@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import MainTitle from "../components/Headers/MainTitle";
 import HeroButton from "../components/Buttons/HeroButton";
-import axios from "axios";
 
 export default function Index() {
   const [accessToken, setAccessToken] = useState();
@@ -35,23 +34,6 @@ export default function Index() {
     }
   }
 
-
-  // async function getRefreshToken() {
-
-  //   let access_token = "BQCCQVVOhpL53Ax6YlmUAJBPq1HMJqEfIPf2-xT0lj02jcq6asA-WWK46_1iDCp7lEDNFUCNDdBZoBz1kYLLL5W4OJu3UyUThs_syyQpdktfdH-ag_C1yCw1sjt5PNo_KXgHv3-INt0kfXRK2sZNfDmLcsGLMb049SjNNXV71YA4TTVy4uof"
-  //   let refresh_token = "refresh_token=AQCvu4TGuqznBuiu9LKMmrJ0iBn_pK1o65gsdndzNTlEG4doZbsLah8rIAfiqDKJ_vRWhwPN7pPnCV2v9d8gcAesLghOYIf4hv0C13BFuG6yV71QRBePzz-icIbrVjkIaO4"
-
-  //   try {
-  //     let res = await axios.get(`http://localhost:5000/refresh_token?${refresh_token}}`)
-  //     console.log(res);
-  //   } catch (error) {
-  //     console.error(error)
-  //   }
-  // }
-
-  // access_token=BQD1odfDwJ0n9mxuddO47A0V5Rg0oEj0P3tWQEFJqj4l5nd8f1hS7cXkgixHrwjNKbt1WKVcMMB9h78rwhCRKmUYqBp--_cFU1V9TABXBtLmfdCENqXbN-dT7TpSSynT-BKu3p92m3wzt_V59L-1BMuWKD3kG83gnBVGDhqTqrFctZ329utF
-  // refresh_token=AQCw7UoQ2OWi3Wz06KIicV3pVL92lwAbBYWZ4ZvY4waCr3T3we9RW7KWQ9w8ARWlzzWAcJiCrVtSSPYaR9mjigTsE0b36BCDKtJUtXqfQnwUVhl2tzAXjkUPJUya7o6loZk
-
   return (
     <div>
       <section>
@@ -69,11 +51,8 @@ export default function Index() {
                   />
                   <HeroButton href={""} colour={"outlined"} name={"Sign up"} />
 
-                  {/* <button href="http://localhost:5000/refresh_token?refresh_token=AQCw7UoQ2OWi3Wz06KIicV3pVL92lwAbBYWZ4ZvY4waCr3T3we9RW7KWQ9w8ARWlzzWAcJiCrVtSSPYaR9mjigTsE0b36BCDKtJUtXqfQnwUVhl2tzAXjkUPJUya7o6loZk">get new access token</button> */}
-                  {/* <button onClick={getRefreshToken}>get new access token</button> */}
-                  <button onClick={getPlaylists}>get my playlists</button>
+                  <button onClick={getPlaylists}>get my plalists</button>
                   <button onClick={getFriendPlaylist}>get friends playlist</button>
-
                 </div>
               </div>
             </div>
