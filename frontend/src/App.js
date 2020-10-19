@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, BrowserRouter as Router } from "react-router-dom";
+import { Route, BrowserRouter as Router, Redirect } from "react-router-dom";
 import Index from "./scenes/Index";
 import Guest from "./scenes/Guest.js";
 import "bulma/css/bulma.css";
@@ -10,7 +10,7 @@ function App() {
     <div className="App">
       <Router>
         <Route path="/" exact component={Index} />
-        <Route path="/guest" exact component={Guest} />
+        <Route path="/guest" component={Guest} />
       </Router>
     </div>
   );

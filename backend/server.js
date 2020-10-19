@@ -1,42 +1,45 @@
-const express = require('express')
-const app = express()
-const mongoose = require('mongoose')
-const { router } = require('./routes/routes')
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-require('dotenv').config()
+const express = require("express");
+const app = express();
+const mongoose = require("mongoose");
+const { router } = require("./routes/routes");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+require("dotenv").config();
 
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 5000;
 
-app.use(cors())
-app.use( express.urlencoded( {extended: false }) )
-  .use( express.json() )
+app.use(cors());
+app
+  .use(express.urlencoded({ extended: false }))
+  .use(express.json())
   .use(cookieParser())
-  .use('/', router)
+  .use("/", router)
   .use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
+    res.header("Access-Control-Allow-Origin", "*");
     next();
   });
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 
-
-const dbName = 'spotify_test'
-const dbConnection = 'mongodb://localhost/' + dbName
+const dbName = "spotify_test";
+const dbConnection = "mongodb://localhost/" + dbName;
 // Set three properties to avoid deprecation warnings:
-mongoose.connect(dbConnection, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false
-      }, (err) => {
-        if (err)
-          console.log('Error connecting to database', err)
-        else
-          console.log('Connected to database!')
-          // listen here because its successful
-          const server = app.listen(port, () => {
-            console.log('listening on port:' + port)
-        })
-})
+// mongoose.connect(dbConnection, {
+//         useNewUrlParser: true,
+//         useUnifiedTopology: true,
+//         useFindAndModify: false
+//       }, (err) => {
+//         if (err)
+//           console.log('Error connecting to database', err)
+//         else
+//           console.log('Connected to database!')
+//           // listen here because its successful
+//           const server = app.listen(port, () => {
+//             console.log('listening on port:' + port)
+//         })
+// })
+const server = app.listen(port, () => {
+  console.log("listening on port:" + port);
+});
