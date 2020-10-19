@@ -10,25 +10,19 @@ const REDIRECT_URI =
   process.env.REDIRECT_URI || "http://localhost:5000/callback";
 const STATE_KEY = "spotify_auth_state";
 
-const generateRandomString = function (length) {
-  let text = "";
-  let possible =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for (let i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-};
+
+const { setOptions, generateRandomString } = require('../utils/utils')
+
+
+// LOG THE USER INTO THEIR SPOTIFY ACCOUNT
 
 router.get("/login", function (req, res) {
-  console.log("ping!");
 
   let state = generateRandomString(16);
   res.cookie(STATE_KEY, state);
 
   // your application requests authorization
-  let scope = "user-read-private user-read-email";
-  // res.header('Access-Control-Allow-Origin', '*');
+  let scope = "user-read-private user-read-email playlist-read-private playlist-read-collaborative user-follow-read";
   res.redirect(
     "https://accounts.spotify.com/authorize?" +
       querystring.stringify({
@@ -41,6 +35,8 @@ router.get("/login", function (req, res) {
   );
 });
 
+// WHEN AUTHORIZED, REDIRECT BACK TO THE APP WITH THE TOKENS IN THE URL
+
 router.get("/callback", function (req, res) {
   // your application requests refresh and access tokens
   // after checking the state parameter
@@ -49,16 +45,11 @@ router.get("/callback", function (req, res) {
   let state = req.query.state || null;
   let storedState = req.cookies ? req.cookies[STATE_KEY] : null;
 
-  // res.header('Access-Control-Allow-Origin', '*');
-
   if (state === null || state !== storedState) {
-    // res.redirect('/#' +
-    //   querystring.stringify({
-    //     error: 'state_mismatch'
-    //   }));
-    res.send({
-      error: "state_mismatch",
-    });
+    res.redirect("http://localhost:3000?" +
+      querystring.stringify({
+        error: 'state_mismatch'
+      }));
   } else {
     res.clearCookie(STATE_KEY);
     let authOptions = {
@@ -87,43 +78,41 @@ router.get("/callback", function (req, res) {
           json: true,
         };
 
+        let personalData = {}
+
         // use the access token to access the Spotify Web API
         request.get(options, (error, response, body) => {
           console.log(body);
           personalData = body;
 
-          // res.send({
-          //   access_token,
-          //   refresh_token,
-          //   user: body,
-          // });
+          // we can also pass the token to the browser to make requests from there
+          res.redirect(
+            `http://localhost:3000/${body.display_name}/?` +
+              querystring.stringify({
+                access_token: access_token,
+                refresh_token: refresh_token,
+              })
+          );
+
+          // res.send(access_token)
         });
 
-        // we can also pass the token to the browser to make requests from there
-        res.redirect(
-          "http://localhost:3000?" +
-            querystring.stringify({
-              access_token: access_token,
-              refresh_token: refresh_token,
-            })
-        );
       } else {
-        // res.redirect('/#' +
-        //   querystring.stringify({
-        //     error: 'invalid_token'
-        //   }));
-
-        res.send({
-          error: "invalid_token",
-        });
+        res.redirect("http://localhost:3000?" +
+          querystring.stringify({
+            error: 'invalid_token'
+          }));
       }
     });
   }
 });
 
 router.get("/refresh_token", function (req, res) {
+
+  console.log('in refresh');
   // requesting access token from refresh token
   let refresh_token = req.query.refresh_token;
+  console.log(refresh_token);
   let authOptions = {
     url: "https://accounts.spotify.com/api/token",
     headers: {
@@ -148,7 +137,64 @@ router.get("/refresh_token", function (req, res) {
   });
 });
 
+
+
+// GET FIRST 50 PLAYLISTS FROM AUTHORIZED USER
+
+router.get('/compare/:username/:access_token', (req, res) => {
+
+  // get the username and access token from the params
+  let { username, access_token } = req.params
+
+  // get the first 50 playlists from the user
+  let playListUrl = "https://api.spotify.com/v1/me/playlists?limit=50"
+  let playListOptions = setOptions(playListUrl, access_token)
+  let playlists = []
+
+  // use the access token to access the Spotify Web API
+  request.get(playListOptions, (error, response, body) => {
+    // get the wanted data out of the body sent back from spotify
+    playlists = body.items.map(e => ({
+        name: e.name, 
+        link: e.href, 
+        public: e.public, 
+        trackLink: e.tracks.href
+    }))
+    res.send(playlists)
+  });
+})
+
+
+
+// GET PUBLIC PLAYLISTS OF A FRIEND
+
+router.get('/friend/:username/:access_token', (req, res) => {
+
+  // get the username and access token from the params
+  let { username, access_token } = req.params
+
+  // get the first 50 playlists from the user
+  let playListUrl = `	https://api.spotify.com/v1/users/${username}/playlists?limit=50`
+  let playListOptions = setOptions(playListUrl, access_token)
+  let friendPlaylists = []
+
+  // use the access token to access the Spotify Web API
+  request.get(playListOptions, (error, response, body) => {
+    // console.log(response);
+    // get the wanted data out of the body sent back from spotify
+    friendPlaylists = body.items.map(e => ({
+        name: e.name, 
+        link: e.href, 
+        public: e.public, 
+        trackLink: e.tracks.href
+    }))
+    res.send(friendPlaylists)
+  });
+})
+
+
+
+
 module.exports = {
-  router,
-  // getMyInfo
+  router
 };
