@@ -12,6 +12,7 @@ const STATE_KEY = "spotify_auth_state";
 
 
 const { setOptions, generateRandomString } = require('../utils/utils')
+const { addOrUpdateUser } = require("../utils/utils.model");
 
 
 // LOG THE USER INTO THEIR SPOTIFY ACCOUNT
@@ -78,12 +79,20 @@ router.get("/callback", function (req, res) {
           json: true,
         };
 
-        let personalData = {}
 
         // use the access token to access the Spotify Web API
-        request.get(options, (error, response, body) => {
+        request.get(options, async (error, response, body) => {
           console.log(body);
-          personalData = body;
+
+          let user = {
+            username: body.id,
+            displayName: body.display_name,
+            accessToken: access_token,
+            refreshToken: refresh_token
+          }
+
+          // ADD USER TO DATABASE
+          await addOrUpdateUser(user)
 
           // we can also pass the token to the browser to make requests from there
           res.redirect(
@@ -174,7 +183,7 @@ router.get('/friend/:username/:access_token', (req, res) => {
   let { username, access_token } = req.params
 
   // get the first 50 playlists from the user
-  let playListUrl = `	https://api.spotify.com/v1/users/${username}/playlists?limit=50`
+  let playListUrl = `https://api.spotify.com/v1/users/${username}/playlists?limit=50`
   let playListOptions = setOptions(playListUrl, access_token)
   let friendPlaylists = []
 

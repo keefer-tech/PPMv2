@@ -23,23 +23,23 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-const dbName = "spotify_test";
+const dbName = process.env.DB_NAME || "test";
 const dbConnection = "mongodb://localhost/" + dbName;
 // Set three properties to avoid deprecation warnings:
-// mongoose.connect(dbConnection, {
-//         useNewUrlParser: true,
-//         useUnifiedTopology: true,
-//         useFindAndModify: false
-//       }, (err) => {
-//         if (err)
-//           console.log('Error connecting to database', err)
-//         else
-//           console.log('Connected to database!')
-//           // listen here because its successful
-//           const server = app.listen(port, () => {
-//             console.log('listening on port:' + port)
-//         })
-// })
-const server = app.listen(port, () => {
-  console.log("listening on port:" + port);
-});
+mongoose.connect(dbConnection, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false
+      }, (err) => {
+        if (err)
+          console.log(`Error connecting to database, server not running`, err)
+        else
+          console.log(`Connected to database: ${dbName}`)
+          // listen here because its successful
+          const server = app.listen(port, () => {
+            console.log('listening on port:' + port)
+        })
+})
+// const server = app.listen(port, () => {
+//   console.log("listening on port:" + port);
+// });
