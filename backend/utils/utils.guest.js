@@ -5,12 +5,19 @@ const getAuthToken = async () => {
   // a 64bit encoded "client_id:client_secret"
   const encodedSecret = process.env.ENCODED_SECRET
 
+  console.log(encodedSecret);
+
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Basic " + encodedSecret);
   myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
+  console.log(myHeaders);
+
   var urlencoded = new URLSearchParams();
   urlencoded.append("grant_type", "client_credentials");
+
+  console.log(urlencoded);
+
 
   var requestOptions = {
     method: "POST",
@@ -18,6 +25,8 @@ const getAuthToken = async () => {
     body: urlencoded,
     redirect: "follow",
   };
+
+  console.log(requestOption);
 
   try {
     let raw = await fetch(
