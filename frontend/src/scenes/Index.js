@@ -1,22 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import MainTitle from "../components/Headers/MainTitle";
 import HeroButton from "../components/Buttons/HeroButton";
-import axios from "axios";
 
 export default function Index() {
-  // const [tokens, setTokens] = useState([])
-
-  // async function spotifyLogin() {
-
-  //   try {
-  //     let res = await axios.get('http://localhost:5000/login')
-  //     setTokens(res)
-  //     console.log(tokens);
-  //   } catch (error) {
-  //     console.error(error)
-  //   }
-  // }
-
   return (
     <div>
       <section>
