@@ -11,7 +11,8 @@ const REDIRECT_URI =
 const STATE_KEY = "spotify_auth_state";
 
 
-const { setOptions, generateRandomString } = require('../utils/utils')
+const { setOptions, generateRandomString } = require('../utils/utils');
+const getAllData = require("../utils/utils.guest");
 const { addOrUpdateUser } = require("../utils/utils.model");
 
 
@@ -201,6 +202,17 @@ router.get('/friend/:username/:access_token', (req, res) => {
   });
 })
 
+
+// GET publicLiked PLAYLISTS TO ANALYSE
+
+router.post('/guest/analyse', async (req, res) => {
+
+  // get the username and access token from the params
+  let { userArray } = req.body
+  let data = await getAllData(userArray)
+  res.send(data)
+
+})
 
 
 
