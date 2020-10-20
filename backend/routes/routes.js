@@ -199,12 +199,13 @@ router.post("/user/friend/compare", async (req, res) => {
   let { playlistArray, username } = req.body;
 
   // get random playlist name from faker
-  let playlistName = `ppm-${faker.vehicle.color()}-${faker.random.word()}-${faker.vehicle.model()} `;
-  console.log(playlistName);
+  // generate playlist name
+  let playlistName = await generatePlaylistName();
 
   // redirect to playlist page and show loading on FE
   // res.redirect(`http://localhost:3000/user/friend/compare/${playlistName}`)
-
+  // res.send({ redirect: `/user/friend/compare/${playlistName}` });
+  
   // make api calls to get data
   // this will take some time
   let filteredTracks = await getPlaylistItems(playlistArray, username);

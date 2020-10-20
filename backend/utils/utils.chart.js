@@ -40,7 +40,7 @@ const filterByCommonArtists = (data) => {
     }
   });
 
-  console.log(sortedData);
+  // console.log(sortedData);
   return sortedData;
 };
 
@@ -52,7 +52,6 @@ const processData = async (apiCall) => {
 };
 
 const getAvgPopularity = (data) => {
-  // data = data.flat();
   let sumPopular = data
     .map((el) => el.popularity)
     .reduce((acc, val) => acc + val, 0);
@@ -61,9 +60,7 @@ const getAvgPopularity = (data) => {
 
 const getAvgPopularityByUser = (data) => {
   //TODO: filterByCommonArtists doesn't account for if both userA and userB add the same song to their lists
-  // data = filterByCommonArtists(data);
   let dataSet = [];
-  // let userNames = Array.from(new Set(data.flat().map((el) => el.username)));
   let userNames = Array.from(new Set(data.map((el) => el.username)));
   for (let user of userNames) {
     let usersSongs = data.filter((song) => song.username === user);
@@ -80,7 +77,6 @@ const getAvgPopularityByUser = (data) => {
 const getNumTracksByUser = (data) => {
   //TODO: filterByCommonArtists doesn't account for if both userA and userB add the same song to their lists
   let dataSet = [];
-  // let userNames = Array.from(new Set(data.flat().map((el) => el.username)));
   let userNames = Array.from(new Set(data.map((el) => el.username)));
   for (let user of userNames) {
     let contributed = data.flat().filter((song) => song.username === user);
@@ -145,7 +141,7 @@ const getDecadesByUser = (data) => {
       }
     }
     let userWeight = weights[userNames.indexOf(user)];
-    console.log({ userWeight });
+    // console.log({ userWeight });
     dataSet.push(Object.values(dates).map((el) => Math.round(el * userWeight)));
   }
   return [userNames, dataSet];
@@ -355,7 +351,6 @@ function getChartColor(num) {
 
 function getPieChartData(data) {
   let pieData = getNumTracksByUser(data);
-  console.log({ pieData });
 
   let amountOfColors = pieData[0].length > 10 ? pieData[0].length : 10;
   let colors = getChartColor(amountOfColors);
