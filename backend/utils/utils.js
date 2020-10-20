@@ -107,23 +107,6 @@ async function getAllPlaylistItems(playlistArray, username) {
 
 
 
-async function getAllDataForGuest(req, res, next) {
-    // Process the data received in req.body
-    // instead of res.redirect('/');
-    let { userArray } = req.body
-    let data = await getAllData(userArray)
-    req.dataProcessed = data;
-    return next();
-}
-
-
-async function getAllDataForGuest(req, res) {
-  // Process the data received in req.body
-  // instead of res.redirect('/');
-  let { dataProcessed } = req.body
-  res.send(dataProcessed)
-}
-
 
 
 module.exports = { 
