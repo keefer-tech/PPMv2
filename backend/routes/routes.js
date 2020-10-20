@@ -175,7 +175,6 @@ router.post("/guest/analyse", async (req, res) => {
   let userArray = req.body.users;
 
   let data = await getAllData(userArray);
-  console.log({ data });
 
   res.send(data);
 });
