@@ -46,7 +46,6 @@ async function getUserFromDb(username) {
 async function getPlaylistFromGuestDb(playlistName) {
   try {
     let playlist = await GuestModel.findOne({ playlistName });
-    console.log(playlist);
     return playlist;
   } catch (error) {
     console.log(`Error in getPlaylistFromDb: ${error}`);

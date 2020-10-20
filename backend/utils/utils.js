@@ -17,6 +17,7 @@ const {
   getRadarChartData,
   getPieChartOptions,
   getPieChartData,
+  filterByCommonArtists,
 } = require("./utils.chart");
 
 function setOptions(url, access_token) {
@@ -109,25 +110,28 @@ function generatePlaylistName() {
 }
 
 function sortPlaylistsIntoChartData(data) {
+
+  let filteredData = filterByCommonArtists(data)
+
   let chartData = {
     pie: {
       type: "pie",
-      data: getPieChartData(data),
+      data: getPieChartData(filteredData),
       options: getPieChartOptions(),
     },
     bar: {
       type: "bar",
-      data: getBarChartData(data),
+      data: getBarChartData(filteredData),
       options: getBarChartOptions(),
     },
     line: {
       type: "line",
-      data: getLineChartData(data),
+      data: getLineChartData(filteredData),
       options: getLineChartOptions(),
     },
     radar: {
       type: "radar",
-      data: getRadarChartData(data),
+      data: getRadarChartData(filteredData),
       options: getRadarChartOptions(),
     },
   };
