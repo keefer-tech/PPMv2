@@ -13,7 +13,7 @@ export default function ChartLayout() {
   // update state in useeffect
   // react will re-render the page
   async function getChartData(playlist) {
-    let data = Axios({
+    let data = await Axios({
       method: "get",
       url: `http://localhost:5000/data/${playlist}`,
     });
@@ -43,51 +43,7 @@ export default function ChartLayout() {
     }
   }
 
-  // let chartData = await getChartData(playlist);
-
-  //DUMMY DATA FOR NOW
-  let chartData = {
-    pie: {
-      type: "pie",
-      data: {
-        datasets: [
-          {
-            data: [10, 20, 30],
-          },
-        ],
-        labels: ["Red", "Yellow", "Blue"],
-      },
-      options: {
-        responsive: true,
-        title: {
-          display: false,
-          text: "Pie Chart",
-        },
-        tooltips: {
-          mode: "index",
-          intersect: false,
-        },
-        hover: {
-          mode: null,
-        },
-      },
-    },
-    bar: {
-      type: "bar",
-      data: {},
-      options: {},
-    },
-    line: {
-      type: "line",
-      data: {},
-      options: {},
-    },
-    radar: {
-      type: "radar",
-      data: {},
-      options: {},
-    },
-  };
+  let chartData = getChartData(playlist);
 
   useEffect(() => populateCharts(chartData), []);
 
