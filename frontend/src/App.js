@@ -1,7 +1,7 @@
 import React from "react";
 import "bulma/css/bulma.css";
 import "./App.css";
-import { Route, BrowserRouter as Router, useParams } from "react-router-dom";
+import { Route, BrowserRouter as Router } from "react-router-dom";
 import Index from "./scenes/Index";
 import Guest from "./scenes/Guest.js";
 import User from "./scenes/User.js";
@@ -12,8 +12,8 @@ function App() {
     <div className="App">
       <Router>
         <Route path="/" exact component={Index} />
-        <Route path="/guest/:playlist" component={<ChartLayout />} />
-        <Route path="/guest" component={Guest} />
+        <Route exact path="/guest" component={Guest} />
+        <Route path="/guest/:playlist" component={ChartLayout} />
         <Route path="/user" component={User} />
       </Router>
     </div>

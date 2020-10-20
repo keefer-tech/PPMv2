@@ -2,10 +2,8 @@ import React, { useEffect } from "react";
 import Chart from "chartjs";
 
 export default function NewChart({ data, id }) {
-  useEffect(() => {
-    let chartCanvas = document.getElementById({ id }).getContext("2d");
-    new Chart(chartCanvas, data);
-  }, [data]);
+  let chartCanvas = document.getElementById({ id }).getContext("2d");
+  new Chart(chartCanvas, data);
 
   return (
     <div>
