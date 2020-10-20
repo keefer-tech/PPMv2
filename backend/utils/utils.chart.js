@@ -360,7 +360,7 @@ function getPieChartData(data) {
   let pieChartData = {
     datasets: [
       {
-        label: "Pie Chart",
+        label: "Banger Playlist",
         data: dataSet,
         highlight: colors.backgroundColors,
         backgroundColor: colors.backgroundColors,
@@ -442,7 +442,7 @@ function getRadarChartData(data) {
   let radarChartData = {
     datasets: [
       {
-        label: "Your Banger Playlist",
+        label: "Banger Playlist",
         data: dataSet,
         backgroundColor: colors.backgroundColors[0],
         borderColor: colors.borderColors[0],
