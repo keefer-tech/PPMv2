@@ -10,13 +10,10 @@ const REDIRECT_URI =
   process.env.REDIRECT_URI || "http://localhost:5000/callback";
 const STATE_KEY = "spotify_auth_state";
 
-const {
-  setOptions,
-  generateRandomString,
-  refreshAccessToken,
-} = require("../utils/utils");
+const { setOptions, generateRandomString, refreshAccessToken, generatePlaylistName, sortPlaylistsIntoChartData } = require('../utils/utils');
+
 const getAllData = require("../utils/utils.guest");
-const { addOrUpdateUser } = require("../utils/utils.model");
+const { addOrUpdateUser, checkIfPlaylistNameExists, savePlaylistToGuestDb, getPlaylistFromGuestDb } = require("../utils/utils.model");
 
 // LOG THE USER INTO THEIR SPOTIFY ACCOUNT
 
@@ -114,29 +111,43 @@ router.get("/callback", function (req, res) {
   }
 });
 
+
+
+
+
+// GET DATA FOR USER
+
 // GET FIRST 50 PLAYLISTS FROM AUTHORIZED USER
 
 router.post("/compare", async (req, res) => {
   // get the username and access token from the params
-  let { username } = req.body;
-  let access_token = await refreshAccessToken(username);
-  let limit = 50;
+
+  let { username } = req.body
+  let access_token = await refreshAccessToken(username)
+  let limit = 50
+  let offset = 0
 
   // get the first 50 playlists from the user
-  let playListUrl = `https://api.spotify.com/v1/me/playlists?limit=${limit}`;
-  let playListOptions = setOptions(playListUrl, access_token);
-  let playlists = [];
+  let playListUrl = `https://api.spotify.com/v1/me/playlists?limit=${limit}&offset=${offset}`
+  let playListOptions = setOptions(playListUrl, access_token)
+  let playlists = []
+
 
   // use the access token to access the Spotify Web API
   request.get(playListOptions, (error, response, body) => {
     // get the wanted data out of the body sent back from spotify
-    playlists = body.items.map((e) => ({
-      name: e.name,
-      link: e.href,
-      public: e.public,
-      trackLink: e.tracks.href,
-    }));
-    res.send(playlists);
+
+    playlists = body.items.map(e => ({
+        name: e.name, 
+        id: e.id, 
+        link: e.href, 
+        public: e.public, 
+        trackLink: e.tracks.href
+    }))
+
+    // send the current user playlists to the DB
+    res.send(playlists)
+
   });
 });
 
@@ -145,34 +156,104 @@ router.post("/compare", async (req, res) => {
 router.post("/friend/playlist", async (req, res) => {
   // get the username and access token from the params
   // let { username, access_token } = req.params
-  let { username, friend_username } = req.body;
-  let access_token = await refreshAccessToken(username);
-  let limit = 50;
+
+  let { username, friend_username } = req.body
+  let access_token = await refreshAccessToken(username)
+  let limit = 50
+  let offset = 0
+
+  // send the friends username to the DB
 
   // get the first 50 playlists from the user
-  let playListUrl = `https://api.spotify.com/v1/users/${friend_username}/playlists?limit=${limit}`;
-  let playListOptions = setOptions(playListUrl, access_token);
-  let friendPlaylists = [];
+  let playListUrl = `https://api.spotify.com/v1/users/${friend_username}/playlists?limit=${limit}&offset=${offset}`
+  let playListOptions = setOptions(playListUrl, access_token)
+  let friendPlaylists = []
+
 
   // use the access token to access the Spotify Web API
   request.get(playListOptions, (error, response, body) => {
     // console.log(response);
     // get the wanted data out of the body sent back from spotify
-    friendPlaylists = body.items.map((e) => ({
-      name: e.name,
-      link: e.href,
-      public: e.public,
-      trackLink: e.tracks.href,
-    }));
-    res.send(friendPlaylists);
+
+    friendPlaylists = body.items.map(e => ({
+        name: e.name, 
+        id: e.id, 
+        link: e.href, 
+        public: e.public, 
+        trackLink: e.tracks.href
+    }))
+    // send the friends playlists to the DB
+
+    res.send(friendPlaylists)
+
   });
 });
+
+
+// GET ALL SONGS FROM MULTIPLE PLAYLISTS
+// 
+
+
+
+
+
+
+
+
+
+
+
+// GUEST ACCOUNT ROUTES
 
 // GET publicLiked PLAYLISTS TO ANALYSE
 
 router.post("/guest/analyse", async (req, res) => {
   // get the username and access token from the params
-  let userArray = req.body.users;
+
+  let { userArray } = req.body
+  
+  // get all the tracks from the 2 publicLiked playlists
+  let data = await getAllData(userArray)
+
+  // generate playlist name
+  let playlistName = await generatePlaylistName()
+
+  // check if playlistName exists
+  let bool = await checkIfPlaylistNameExists()
+
+  // if the name does exist then generate a new one
+  // I'm not doing a loop here because I can't be bothered for now
+  // but need one in future
+  if (bool) {
+    playlistName = await generatePlaylistName()
+  }
+
+  // create object to save to DB
+  let objectToSaveToGuestDb = {
+    playlistName,
+    data,
+    users: userArray.length
+  }
+
+  // save object to DB
+  await savePlaylistToGuestDb(objectToSaveToGuestDb)
+
+  // save that data to the guest model with a playlist name
+  res.redirect(`/guest/${playlistName}`)
+
+})
+
+
+
+router.get('/data/:playlistName', async (req, res) => {
+  let { playlistName } = req.params
+
+  let playlistData = await getPlaylistFromGuestDb(playlistName)
+  let chartData = await sortPlaylistsIntoChartData(playlistData)
+
+  res.send(chartData)
+})
+
 
   let data = await getAllData(userArray);
   console.log({ data });

@@ -16,13 +16,10 @@ const User = new Schema({
     },
     refreshToken: {
       type: String,
-      // required: true,
     },
     friends: {
       type: Array
     }
 })
 
-
 module.exports = mongoose.model("User", User)
-
