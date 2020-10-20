@@ -3,7 +3,7 @@ import axios from "axios";
 import FuncButton from "../Buttons/FuncButton";
 import UserField from "../GuestComponents/UserField";
 
-export default function CollectUsers() {
+export default function CollectUsers({ triggerLoading }) {
   const [fields, setFields] = useState([<UserField />, <UserField />]);
 
   function getUsers() {
@@ -23,6 +23,7 @@ export default function CollectUsers() {
   }
 
   async function requestInfo() {
+    triggerLoading();
     let users = getUsers();
 
     let res = await axios({
