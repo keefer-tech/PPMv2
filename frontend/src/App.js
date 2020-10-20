@@ -1,6 +1,7 @@
 import React from "react";
 import "bulma/css/bulma.css";
 import "./App.css";
+import "./custom.css";
 import { Route, BrowserRouter as Router } from "react-router-dom";
 import Index from "./scenes/Index";
 import Guest from "./scenes/Guest.js";
