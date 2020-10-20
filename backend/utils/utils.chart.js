@@ -63,7 +63,7 @@ const getAvgPopularityByUser = (data) => {
   //TODO: filterByCommonArtists doesn't account for if both userA and userB add the same song to their lists
   // data = filterByCommonArtists(data);
   let dataSet = [];
-  let userNames = Array.from(new Set(data.map((el) => el.username)));
+  let userNames = Array.from(new Set(data.flat().map((el) => el.username)));
   for (let user of userNames) {
     let usersSongs = data.filter((song) => song.username === user);
     let usersPopularity = usersSongs
@@ -79,9 +79,9 @@ const getAvgPopularityByUser = (data) => {
 const getNumTracksByUser = (data) => {
   //TODO: filterByCommonArtists doesn't account for if both userA and userB add the same song to their lists
   let dataSet = [];
-  let userNames = Array.from(new Set(data.map((el) => el.username)));
+  let userNames = Array.from(new Set(data.flat().map((el) => el.username)));
   for (let user of userNames) {
-    let contributed = data.filter((song) => song.username === user);
+    let contributed = data.flat().filter((song) => song.username === user);
     dataSet.push(contributed.length);
   }
   return [userNames, dataSet];
@@ -176,63 +176,62 @@ const getNumTracksByArtist = (data, amount = 6) => {
 };
 
 var globalColorStrings = {
-  blue: 'rgba(0, 0, 255, 1)',
-  blueviolet: 'rgba(138, 43, 226, 1)',
-  brown: 'rgba(165, 42, 42, 1)',
-  cadetblue: 'rgba(95, 158, 160, 1)',
-  coral: 'rgba(255, 127, 80, 1)',
-  cornflowerblue: 'rgba(100, 149, 237, 1)',
-  crimson: 'rgba(220, 20, 60, 1)',
-  darkblue: 'rgba(0, 0, 139, 1)',
-  darkcyan: 'rgba(0, 139, 139, 1)',
-  darkgoldenrod: 'rgba(184, 134, 11, 1)',
-  darkgreen: 'rgba(0, 100, 0, 1)',
-  darkmagenta: 'rgba(139, 0, 139, 1)',
-  darkorange: 'rgba(255, 140, 0, 1)',
-  darkorchid: 'rgba(153, 50, 204, 1)',
-  darkred: 'rgba(139, 0, 0, 1)',
-  darkslateblue: 'rgba(72, 61, 139, 1)',
-  darkviolet: 'rgba(148, 0, 211, 1)',
-  deeppink: 'rgba(255, 20, 147, 1)',
-  dodgerblue: 'rgba(30, 144, 255, 1)',
-  firebrick: 'rgba(178, 34, 34, 1)',
-  forestgreen: 'rgba(34, 139, 34, 1)',
-  fuchsia: 'rgba(255, 0, 255, 1)',
-  goldenrod: 'rgba(218, 165, 32, 1)',
-  green: 'rgba(0, 128, 0, 1)',
-  hotpink: 'rgba(255, 105, 180, 1)',
-  indianred: 'rgba(205, 92, 92, 1)',
-  indigo: 'rgba(75, 0, 130, 1)',
-  lightcoral: 'rgba(240, 128, 128, 1)',
-  magenta: 'rgba(255, 0, 255, 1)',
-  maroon: 'rgba(128, 0, 0, 1)',
-  mediumblue: 'rgba(0, 0, 205, 1)',
-  mediumpurple: 'rgba(147, 112, 219, 1)',
-  mediumslateblue: 'rgba(123, 104, 238, 1)',
-  mediumvioletred: 'rgba(199, 21, 133, 1)',
-  midnightblue: 'rgba(25, 25, 112, 1)',
-  navy: 'rgba(0, 0, 128, 1)',
-  olive: 'rgba(128, 128, 0, 1)',
-  orange: 'rgba(255, 165, 0, 1)',
-  orangered: 'rgba(255, 69, 0, 1)',
-  orchid: 'rgba(218, 112, 214, 1)',
-  purple: 'rgba(128, 0, 128, 1)',
-  rebeccapurple: 'rgba(102, 51, 153, 1)',
-  red: 'rgba(255, 0, 0, 1)',
-  royalblue: 'rgba(65, 105, 225, 1)',
-  saddlebrown: 'rgba(139, 69, 19, 1)',
-  salmon: 'rgba(250, 128, 114, 1)',
-  seagreen: 'rgba(46, 139, 87, 1)',
-  sienna: 'rgba(160, 82, 45, 1)',
-  slateblue: 'rgba(106, 90, 205, 1)',
-  slategrey: 'rgba(112, 128, 144, 1)',
-  steelblue: 'rgba(70, 130, 180, 1)',
-  teal: 'rgba(0, 128, 128, 1)',
-  tomato: 'rgba(255, 99, 71, 1)',
-  violet: 'rgba(238, 130, 238, 1)',
-  yellow: 'rgba(255, 255, 0, 1)',
+  blue: "rgba(0, 0, 255, 1)",
+  blueviolet: "rgba(138, 43, 226, 1)",
+  brown: "rgba(165, 42, 42, 1)",
+  cadetblue: "rgba(95, 158, 160, 1)",
+  coral: "rgba(255, 127, 80, 1)",
+  cornflowerblue: "rgba(100, 149, 237, 1)",
+  crimson: "rgba(220, 20, 60, 1)",
+  darkblue: "rgba(0, 0, 139, 1)",
+  darkcyan: "rgba(0, 139, 139, 1)",
+  darkgoldenrod: "rgba(184, 134, 11, 1)",
+  darkgreen: "rgba(0, 100, 0, 1)",
+  darkmagenta: "rgba(139, 0, 139, 1)",
+  darkorange: "rgba(255, 140, 0, 1)",
+  darkorchid: "rgba(153, 50, 204, 1)",
+  darkred: "rgba(139, 0, 0, 1)",
+  darkslateblue: "rgba(72, 61, 139, 1)",
+  darkviolet: "rgba(148, 0, 211, 1)",
+  deeppink: "rgba(255, 20, 147, 1)",
+  dodgerblue: "rgba(30, 144, 255, 1)",
+  firebrick: "rgba(178, 34, 34, 1)",
+  forestgreen: "rgba(34, 139, 34, 1)",
+  fuchsia: "rgba(255, 0, 255, 1)",
+  goldenrod: "rgba(218, 165, 32, 1)",
+  green: "rgba(0, 128, 0, 1)",
+  hotpink: "rgba(255, 105, 180, 1)",
+  indianred: "rgba(205, 92, 92, 1)",
+  indigo: "rgba(75, 0, 130, 1)",
+  lightcoral: "rgba(240, 128, 128, 1)",
+  magenta: "rgba(255, 0, 255, 1)",
+  maroon: "rgba(128, 0, 0, 1)",
+  mediumblue: "rgba(0, 0, 205, 1)",
+  mediumpurple: "rgba(147, 112, 219, 1)",
+  mediumslateblue: "rgba(123, 104, 238, 1)",
+  mediumvioletred: "rgba(199, 21, 133, 1)",
+  midnightblue: "rgba(25, 25, 112, 1)",
+  navy: "rgba(0, 0, 128, 1)",
+  olive: "rgba(128, 128, 0, 1)",
+  orange: "rgba(255, 165, 0, 1)",
+  orangered: "rgba(255, 69, 0, 1)",
+  orchid: "rgba(218, 112, 214, 1)",
+  purple: "rgba(128, 0, 128, 1)",
+  rebeccapurple: "rgba(102, 51, 153, 1)",
+  red: "rgba(255, 0, 0, 1)",
+  royalblue: "rgba(65, 105, 225, 1)",
+  saddlebrown: "rgba(139, 69, 19, 1)",
+  salmon: "rgba(250, 128, 114, 1)",
+  seagreen: "rgba(46, 139, 87, 1)",
+  sienna: "rgba(160, 82, 45, 1)",
+  slateblue: "rgba(106, 90, 205, 1)",
+  slategrey: "rgba(112, 128, 144, 1)",
+  steelblue: "rgba(70, 130, 180, 1)",
+  teal: "rgba(0, 128, 128, 1)",
+  tomato: "rgba(255, 99, 71, 1)",
+  violet: "rgba(238, 130, 238, 1)",
+  yellow: "rgba(255, 255, 0, 1)",
 };
-
 
 function getPieChartOptions() {
   return {
@@ -248,7 +247,7 @@ function getPieChartOptions() {
     hover: {
       mode: null,
     },
-  }
+  };
 }
 
 function getBarChartOptions() {
@@ -271,8 +270,7 @@ function getBarChartOptions() {
         },
       ],
     },
-  }
-  
+  };
 }
 
 function getLineChartOptions() {
@@ -310,7 +308,7 @@ function getLineChartOptions() {
         },
       ],
     },
-  }
+  };
 }
 
 function getRadarChartOptions() {
@@ -325,13 +323,12 @@ function getRadarChartOptions() {
         beginAtZero: true,
       },
     },
-  }
+  };
 }
-
 
 function getChartColor(num) {
   let opacity = 0.4;
-  let colorStrings = chart.globalColorStrings;
+  let colorStrings = globalColorStrings;
   let count = 0;
   let backgroundColors = [];
   let borderColors = [];
@@ -355,11 +352,14 @@ function getChartColor(num) {
 }
 
 function getPieChartData(data) {
-  let pieData = getNumTracksByUser(data)
+  let pieData = getNumTracksByUser(data);
+  console.log({ pieData });
+
   let amountOfColors = pieData[0].length > 10 ? pieData[0].length : 10;
   let colors = getChartColor(amountOfColors);
   let dataLabel = pieData[0];
   let dataSet = pieData[1];
+
   let pieChartData = {
     datasets: [
       {
@@ -374,11 +374,11 @@ function getPieChartData(data) {
     // These labels appear in the legend and in the tooltips when hovering different arcs
     labels: dataLabel,
   };
-  return pieChartData
+  return pieChartData;
 }
 
 function getLineChartData(data) {
-  let lineData = getDecadesByUser(data)
+  let lineData = getDecadesByUser(data);
   let amountOfColors = lineData[0].length > 10 ? lineData[0].length : 10;
   let colors = getChartColor(amountOfColors);
   let dataLabels = lineData[0];
@@ -409,11 +409,11 @@ function getLineChartData(data) {
     labels: ["50s", "60s", "70s", "80s", "90s", "00s", "10s", "20s"],
   };
 
-  return lineChartData
+  return lineChartData;
 }
 
 function getBarChartData(data) {
-  let barData = getAvgPopularityByUser(data)
+  let barData = getAvgPopularityByUser(data);
   let amountOfColors = barData[0].length > 10 ? barData[0].length : 10;
   let colors = getChartColor(amountOfColors);
   let dataLabel = barData[0];
@@ -433,11 +433,11 @@ function getBarChartData(data) {
     // These labels appear in the legend and in the tooltips when hovering different arcs
     labels: dataLabel,
   };
-  return barChartData
+  return barChartData;
 }
 
 function getRadarChartData(data) {
-  let radarData = getAvgPopularityByUser(data)
+  let radarData = getAvgPopularityByUser(data);
   let amountOfColors = radarData[0].length > 10 ? radarData[0].length : 10;
   let colors = getChartColor(amountOfColors);
   let dataLabel = radarData[0];
@@ -457,10 +457,8 @@ function getRadarChartData(data) {
     // These labels appear in the legend and in the tooltips when hovering different arcs
     labels: dataLabel,
   };
-  return radarChartData
+  return radarChartData;
 }
-
-
 
 module.exports = {
   getPieChartOptions,
@@ -471,5 +469,5 @@ module.exports = {
   getPieChartData,
   getBarChartData,
   getLineChartData,
-  getRadarChartData
-}
+  getRadarChartData,
+};
