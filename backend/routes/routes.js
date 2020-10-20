@@ -191,12 +191,27 @@ router.post("/friend/playlist", async (req, res) => {
 
 
 // GET ALL SONGS FROM MULTIPLE PLAYLISTS
-// 
+
+router.post('/user/friend/compare', async (req, res) => {
+  
+  // this will be an array of playlist ID strings
+  let { playlistArray, username } = req.body
+
+  // get random playlist name from faker
+  let playlistName = `ppm-${faker.vehicle.color()}-${faker.random.word()}-${faker.vehicle.model()} `
+  console.log(playlistName);
+
+  // redirect to playlist page and show loading on FE
+  // res.redirect(`http://localhost:3000/user/friend/compare/${playlistName}`)
+
+  // make api calls to get data
+  // this will take some time
+  let filteredTracks = await getPlaylistItems(playlistArray, username) 
 
 
-
-
-
+  // send the data back to front end, I hope this works
+  res.send(filteredTracks)
+})
 
 
 
@@ -255,11 +270,6 @@ router.get('/data/:playlistName', async (req, res) => {
 })
 
 
-  let data = await getAllData(userArray);
-  console.log({ data });
-
-  res.send(data);
-});
 
 module.exports = {
   router,

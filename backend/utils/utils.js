@@ -1,5 +1,5 @@
 const request = require("request");
-const querystring = require("querystring");
+// const querystring = require("querystring");
 const axios = require('axios')
 const faker = require('faker')
 
@@ -77,6 +77,41 @@ async function refreshAccessToken(username) {
 
 
 
+async function getAllPlaylistItems(playlistArray, username) {
+
+  let access_token = await refreshAccessToken(username)
+  let limit = 100
+  let market = 'AU'
+  let offset = 0
+  let items = []
+
+  // while (true) {
+    // let playListUrl = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?market=${market}&limit=${limit}&offset=${offset}`
+    // let playListOptions = setOptions(playListUrl, access_token)
+
+    //     // use the access token to access the Spotify Web API
+    // request.get(playListOptions, (error, response, body) => {
+    //   // console.log(response);
+    //   // get the wanted data out of the body sent back from spotify
+    //   items = body.items.map(e => ({
+    //       // name: e.name, 
+    //       // id: e.id, 
+    //       // link: e.href, 
+    //       // public: e.public, 
+    //       // trackLink: e.tracks.href
+    //   }))
+    
+    // }
+    // break
+  // }
+
+
+  return items
+
+}
+
+
+  
 function generatePlaylistName() {
   // get random playlist name from faker
   let playlistName = `ppm-${faker.vehicle.color()}-${faker.random.word()}-${faker.vehicle.model()} `
@@ -117,11 +152,11 @@ function sortPlaylistsIntoChartData(data) {
 
 
 
-
 module.exports = { 
   setOptions,
   generateRandomString,
   refreshAccessToken,
+  getAllPlaylistItems,
   generatePlaylistName,
   sortPlaylistsIntoChartData
 }
