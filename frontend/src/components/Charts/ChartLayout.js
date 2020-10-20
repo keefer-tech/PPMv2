@@ -22,29 +22,29 @@ export default function ChartLayout() {
       setRadarObject(chartData.data.radar);
     };
     fetchData();
-  }, []);
+  }, [playlist]);
 
   return (
-    <div className="columns notification is-dark is-centered">
-      <div className="column">
-        <div className="notification is-success m-2">
+    <div className="tile is-ancestor notification is-dark is-centered">
+      <div className="tile is-vertical is-parent">
+        <div className="tile is-child notification is-success m-2">
           <div className="box">
             <Pie data={pieObject.data} options={pieObject.options} />
           </div>
         </div>
-        <div className="notification is-success m-2">
+        <div className="tile is-child notification is-success m-2">
           <div className="box">
             <Bar data={barObject.data} options={barObject.options} />
           </div>
         </div>
       </div>
-      <div className="column">
-        <div className="notification is-success m-2">
+      <div className="tile is-vertical is-parent">
+        <div className="tile is-child notification is-success m-2">
           <div className="box">
             <Line data={lineObject.data} options={lineObject.options} />
           </div>
         </div>
-        <div className="notification is-success m-2">
+        <div className="tile is-child notification is-success m-2">
           <div className="box">
             <Radar data={radarObject.data} options={radarObject.options} />
           </div>
