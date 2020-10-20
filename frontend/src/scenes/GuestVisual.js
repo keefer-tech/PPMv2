@@ -43,7 +43,7 @@ export default function GuestVisual() {
       <div className="tile is-parent is-vertical is-3">
         <div className="tile is-child is-vertical">
           <h1 className="title">Playlist Here:</h1>
-          <div className="box">{songs}</div>
+          <div className="box scrollable">{songs}</div>
         </div>
       </div>
       <div className="tile is-parent is-vertical">
