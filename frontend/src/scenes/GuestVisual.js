@@ -42,12 +42,15 @@ export default function GuestVisual() {
     <div className="tile is-ancestor  notification is-dark vh-70">
       <div className="tile is-parent is-vertical is-3">
         <div className="tile is-child is-vertical">
-          <h1 className="title">{playlist}</h1>
+          {/* <h3 className="subtitle is-3">{songs.length} Bangers Found!</h3> */}
+          <h4 className="subtitle is-4">{songs.length} bangers found on playlist:</h4>
+          <h3 className="title is-3">{playlist}</h3>
           <div className="box scrollable">{songs}</div>
         </div>
       </div>
       <div className="tile is-parent is-vertical">
         <div className="tile is-child">
+          <h4 className="subtitle is-4">Here's a breakdown of your playlist</h4>
           <ChartLayout
             chartData={{ pieObject, barObject, lineObject, radarObject }}
           />

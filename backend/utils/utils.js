@@ -104,7 +104,7 @@ async function getAllPlaylistItems(playlistArray, username) {
 
 function generatePlaylistName() {
   // get random playlist name from faker
-  let playlistName = `ppm-${faker.vehicle.color()}-${faker.random.word()}-${faker.vehicle.model()}`;
+  let playlistName = `ppm-${faker.vehicle.color().replace(/\s/g, '')}-${faker.random.word().replace(/\s/g, '')}-${faker.vehicle.model().replace(/\s/g, '')}`;
   console.log(playlistName);
   return playlistName;
 }

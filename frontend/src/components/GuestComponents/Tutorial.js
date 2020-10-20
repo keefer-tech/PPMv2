@@ -20,7 +20,7 @@ export default function Tutorial() {
                 Step One - Gather Your User ID's
               </h2>
               <p className="mb-4">
-                First, you need to get your Spotify username. Click the dropdown
+                First, you need to get your Spotify username, then click the dropdown
                 menu next to your profile picture on the top right of your home
                 page and click on 'Account'. A new web page will open, and then
                 copy/paste your Username into the 'User ID' inputs on the left
@@ -28,7 +28,7 @@ export default function Tutorial() {
               </p>
               <p className="is-italic">
                 Your friends will also need to provide you with their usernames
-                as well, so make sure they do this as well.
+                as well, so make sure they do this too.
               </p>
             </div>
           </div>
@@ -62,8 +62,8 @@ export default function Tutorial() {
               <p className="mb-4">
                 Finally, you should see 'New Playlist' in your PLAYLISTS on the
                 left, rename that playlist to{" "}
-                <span className="has-text-weight-bold">publicLiked</span>. And
-                your done. Keep in mind that publicLiked is case sensitive.
+                <span className="has-text-weight-bold">publicLiked</span> (case 
+                sensitive), and your done.
               </p>
               <p className="is-italic">
                 Keep in mind your friends will also need to this so we can

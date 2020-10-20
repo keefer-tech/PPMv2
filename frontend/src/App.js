@@ -9,6 +9,7 @@ import User from "./scenes/User.js";
 import MainTitle from "./components/Headers/MainTitle";
 import GuestVisual from "./scenes/GuestVisual";
 import Footer from "./components/Headers/Footer";
+import NotFoundPage from "./scenes/NotFound";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route exact path="/guest" component={Guest} />
         <Route path="/guest/:playlist" component={GuestVisual} />
         <Route path="/user" component={User} />
+        <Route component={NotFoundPage} />
       </Router>
       <Footer />
     </div>
