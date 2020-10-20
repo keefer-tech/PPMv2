@@ -93,7 +93,6 @@ const getPlaylistItems = async (endpointUrl) => {
 };
 
 const getDisplayName = async (userId) => {
-  console.log("getting display name for:", userId);
   let endpointUrl = `https://api.spotify.com/v1/users/${userId}`;
   let auth = await getAuthToken();
   try {
@@ -121,7 +120,6 @@ const processApiData = async (userId) => {
 
     for (let res of [displayName, playlistUrl, playlistItems]) {
       if (res.hasOwnProperty("error")) {
-        // console.log({ res });
         return res;
       }
     }
@@ -142,7 +140,6 @@ const processApiData = async (userId) => {
       };
       tracks.push(track);
     });
-    // console.log({ tracks });
     return tracks;
   } catch (e) {
     return {

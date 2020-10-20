@@ -1,12 +1,9 @@
 import React from "react";
-import MainTitle from "../components/Headers/MainTitle";
 import HeroButton from "../components/Buttons/HeroButton";
-import axios from 'axios'
+import axios from "axios";
 
 export default function Index() {
-
   async function getPlaylists() {
-
     try {
       let res = await axios({
         method: "post",
@@ -28,7 +25,6 @@ export default function Index() {
   }
 
   async function getFriendPlaylist() {
-
     try {
       let res = await axios({
         method: "post",
@@ -52,7 +48,6 @@ export default function Index() {
   return (
     <div>
       <section>
-        <MainTitle />
         <div className="container">
           <div className="columns">
             <div className="column">
@@ -67,8 +62,9 @@ export default function Index() {
                   <HeroButton href={""} colour={"outlined"} name={"Sign up"} />
 
                   <button onClick={getPlaylists}>get my plalists</button>
-                  <button onClick={getFriendPlaylist}>get friends playlist</button>
-
+                  <button onClick={getFriendPlaylist}>
+                    get friends playlist
+                  </button>
                 </div>
               </div>
             </div>
