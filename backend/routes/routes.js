@@ -10,6 +10,9 @@ const REDIRECT_URI =
   process.env.REDIRECT_URI || "http://localhost:5000/callback";
 const STATE_KEY = "spotify_auth_state";
 
+const { filterByCommonArtists } = require("../utils/utils.chart")
+const getAllData = require("../utils/utils.guest");
+
 const {
   setOptions,
   generateRandomString,
@@ -18,7 +21,6 @@ const {
   sortPlaylistsIntoChartData,
 } = require("../utils/utils");
 
-const getAllData = require("../utils/utils.guest");
 const {
   addOrUpdateUser,
   checkIfPlaylistNameExists,
@@ -75,7 +77,6 @@ router.get("/callback", function (req, res) {
       },
       headers: {
         Authorization:
-          // "Basic " + new Buffer(CLIENT_ID + ":" + CLIENT_SECRET).toString("base64"),
           "Basic " +
           Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString("base64"),
       },
@@ -258,9 +259,10 @@ router.get("/data/:playlistName", async (req, res) => {
 
   let playlist = await getPlaylistFromGuestDb(playlistName);
   let playlistData = playlist.data
-  let chartData = await sortPlaylistsIntoChartData(playlistData);
+  let filteredData = filterByCommonArtists(playlistData)
+  let chartData = await sortPlaylistsIntoChartData(filteredData);
 
-  res.send(chartData);
+  res.send({filteredData, chartData});
 });
 
 module.exports = {
