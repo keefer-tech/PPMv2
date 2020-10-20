@@ -2,7 +2,7 @@ import React from "react";
 import "bulma/css/bulma.css";
 import "./App.css";
 import "./custom.css";
-import { Route, BrowserRouter as Router } from "react-router-dom";
+import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
 import Index from "./scenes/Index";
 import Guest from "./scenes/Guest.js";
 import User from "./scenes/User.js";
@@ -16,11 +16,13 @@ function App() {
     <div className="App">
       <MainTitle />
       <Router>
-        <Route path="/" exact component={Index} />
-        <Route exact path="/guest" component={Guest} />
-        <Route path="/guest/:playlist" component={GuestVisual} />
-        <Route path="/user" component={User} />
-        <Route component={NotFoundPage} />
+        <Switch>
+          <Route path="/" exact component={Index} />
+          <Route exact path="/guest" component={Guest} />
+          <Route path="/guest/:playlist" component={GuestVisual} />
+          <Route path="/user" component={User} />
+          <Route component={NotFoundPage} />
+        </Switch>
       </Router>
       <Footer />
     </div>
