@@ -11,9 +11,9 @@ const REDIRECT_URI =
 const STATE_KEY = "spotify_auth_state";
 
 
-const { setOptions, generateRandomString, refreshAccessToken } = require('../utils/utils');
+const { setOptions, generateRandomString, refreshAccessToken, generatePlaylistName, sortPlaylistsIntoChartData } = require('../utils/utils');
 const getAllData = require("../utils/utils.guest");
-const { addOrUpdateUser } = require("../utils/utils.model");
+const { addOrUpdateUser, checkIfPlaylistNameExists, savePlaylistToGuestDb, getPlaylistFromGuestDb } = require("../utils/utils.model");
 
 
 
@@ -212,9 +212,43 @@ router.post('/guest/analyse', async (req, res) => {
   // get all the tracks from the 2 publicLiked playlists
   let data = await getAllData(userArray)
 
-  // save that data to the guest model with a playlist name
-  res.send(data)
+  // generate playlist name
+  let playlistName = await generatePlaylistName()
 
+  // check if playlistName exists
+  let bool = await checkIfPlaylistNameExists()
+
+  // if the name does exist then generate a new one
+  // I'm not doing a loop here because I can't be bothered for now
+  // but need one in future
+  if (bool) {
+    playlistName = await generatePlaylistName()
+  }
+
+  // create object to save to DB
+  let objectToSaveToGuestDb = {
+    playlistName,
+    data,
+    users: userArray.length
+  }
+
+  // save object to DB
+  await savePlaylistToGuestDb(objectToSaveToGuestDb)
+
+  // save that data to the guest model with a playlist name
+  res.redirect(`/guest/${playlistName}`)
+
+})
+
+
+
+router.get('/data/:playlistName', async (req, res) => {
+  let { playlistName } = req.params
+
+  let playlistData = await getPlaylistFromGuestDb(playlistName)
+  let chartData = await sortPlaylistsIntoChartData(playlistData)
+
+  res.send(chartData)
 })
 
 
