@@ -39,10 +39,10 @@ export default function GuestVisual() {
     fetchData();
   }, [playlist]);
   return (
-    <div className="tile is-ancestor  notification is-dark">
+    <div className="tile is-ancestor  notification is-dark vh-70">
       <div className="tile is-parent is-vertical is-3">
         <div className="tile is-child is-vertical">
-          <h1 className="title">Playlist Here:</h1>
+          <h1 className="title">{playlist}</h1>
           <div className="box scrollable">{songs}</div>
         </div>
       </div>
