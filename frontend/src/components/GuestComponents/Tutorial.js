@@ -66,7 +66,7 @@ export default function Tutorial() {
                 your done. Keep in mind that publicLiked is case sensitive.
               </p>
               <p className="is-italic">
-                Keep in mind your friends will also need to to this so we can
+                Keep in mind your friends will also need to this so we can
                 find their music to compare as well!
               </p>
             </div>

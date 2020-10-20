@@ -1,14 +1,15 @@
-import React from "react";
+import React from 'react';
+
+// import { Orbitals, Ripple } from 'react-spinners-css';
+import { Ripple } from 'react-spinners-css';
 
 export default function LoadingAnimation() {
   return (
-    <section className="hero is-info is-bold is-fullheight">
-      <div className="hero-body">
-        <div className="container">
-          <h1 className="title">Hang tight,</h1>
-          <h2 className="subtitle">Numbers are being crunched.</h2>
-        </div>
-      </div>
-    </section>
-  );
+    <>
+      <Ripple color="#48C774" size={400}/>
+      {/* <Orbitals color="#2F2F2F" size={600} /> */}
+      {/* <Ripple color="#48C774" size={400}/> */}
+    </>
+  )
 }
+
