@@ -208,7 +208,11 @@ router.post('/guest/analyse', async (req, res) => {
 
   // get the username and access token from the params
   let { userArray } = req.body
+  
+  // get all the tracks from the 2 publicLiked playlists
   let data = await getAllData(userArray)
+
+  // save that data to the guest model with a playlist name
   res.send(data)
 
 })
