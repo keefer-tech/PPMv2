@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Tutorial from "../components/GuestComponents/Tutorial";
 import CollectUsers from "../components/GuestComponents/CollectUsers";
 import LoadingAnimation from "../components/GuestComponents/LoadingAnimation";

@@ -2,11 +2,11 @@ import React from "react";
 
 export default function LoadingAnimation() {
   return (
-    <section class="hero is-info is-bold is-fullheight">
-      <div class="hero-body">
-        <div class="container">
-          <h1 class="title">Hang tight,</h1>
-          <h2 class="subtitle">Numbers are being crunched.</h2>
+    <section className="hero is-info is-bold is-fullheight">
+      <div className="hero-body">
+        <div className="container">
+          <h1 className="title">Hang tight,</h1>
+          <h2 className="subtitle">Numbers are being crunched.</h2>
         </div>
       </div>
     </section>
