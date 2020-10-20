@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-// import Chart from "chartjs";
 import { Bar, Line, Pie, Radar } from "react-chartjs-2";
 import { useParams } from "react-router-dom";
 
@@ -11,6 +10,11 @@ export default function ChartLayout() {
   const [barObject, setBarObject] = useState({});
   const [lineObject, setLineObject] = useState({});
   const [radarObject, setRadarObject] = useState({});
+
+  // phil = 22nllj3rpfhvzlgt5hin5aqra
+  // tyler = tylerhall12
+  // simon = 1231189291
+  // keefer = 12179586444
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,7 +50,11 @@ export default function ChartLayout() {
         </div>
         <div className="tile is-child notification is-success m-2">
           <div className="box">
-            <Radar data={radarObject.data} options={radarObject.options} />
+            { (pieObject.data !== undefined && pieObject.data.datasets[0].data.length > 2) ? (
+              <Radar data={radarObject.data} options={radarObject.options} />
+            ) : (
+              <p>Need to analyse more than 3 users to view this graph</p>
+            )}
           </div>
         </div>
       </div>
