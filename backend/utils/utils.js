@@ -1,12 +1,18 @@
 const request = require("request");
 // const querystring = require("querystring");
 const axios = require('axios')
+const faker = require('faker')
 
 require("dotenv").config();
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 
 const { getUserFromDb, addOrUpdateUser } = require('./utils.model')
+const { getBarChartOptions, getBarChartData, 
+        getLineChartOptions, getLineChartData,
+        getRadarChartOptions, getRadarChartData,
+        getPieChartOptions, getPieChartData
+      } = require('./utils.chart')
 
 
 
@@ -71,7 +77,6 @@ async function refreshAccessToken(username) {
 
 
 
-
 async function getAllPlaylistItems(playlistArray, username) {
 
   let access_token = await refreshAccessToken(username)
@@ -102,7 +107,45 @@ async function getAllPlaylistItems(playlistArray, username) {
 
 
   return items
+
+}
+
+
   
+function generatePlaylistName() {
+  // get random playlist name from faker
+  let playlistName = `ppm-${faker.vehicle.color()}-${faker.random.word()}-${faker.vehicle.model()} `
+  console.log(playlistName);
+}
+
+
+
+function sortPlaylistsIntoChartData(data) {
+  
+  let chartData = {
+    pie: {
+      type: "pie",
+      data: getPieChartData(data),
+      options: getPieChartOptions(),
+    },
+    bar: {
+      type: "bar",
+      data: getBarChartData(data),
+      options: getBarChartOptions(),
+    },
+    line: {
+      type: "line",
+      data: getLineChartData(data),
+      options: getLineChartOptions(),
+    },
+    radar: {
+      type: "radar",
+      data: getRadarChartData(data),
+      options: getRadarChartOptions(),
+    },
+  };
+
+  return chartData
 }
 
 
@@ -113,6 +156,8 @@ module.exports = {
   setOptions,
   generateRandomString,
   refreshAccessToken,
-  getAllPlaylistItems
+  getAllPlaylistItems,
+  generatePlaylistName,
+  sortPlaylistsIntoChartData
 }
 

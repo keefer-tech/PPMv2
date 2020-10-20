@@ -1,40 +1,25 @@
 require("dotenv").config();
+const axios = require("axios");
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 
 const getAuthToken = async () => {
   // a 64bit encoded "client_id:client_secret"
-  const encodedSecret = new ArrayBuffer(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64')
-
-  console.log(encodedSecret);
-
-  var myHeaders = new Headers();
-  myHeaders.append("Authorization", "Basic " + encodedSecret);
-  myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-  console.log(myHeaders);
-
-  var urlencoded = new URLSearchParams();
-  urlencoded.append("grant_type", "client_credentials");
-
-  console.log(urlencoded);
-
-
-  var requestOptions = {
-    method: "POST",
-    headers: myHeaders,
-    body: urlencoded,
-    redirect: "follow",
-  };
-
-  console.log(requestOption);
+  const encodedSecret = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString(
+    "base64"
+  );
 
   try {
-    let raw = await fetch(
-      "https://accounts.spotify.com/api/token",
-      requestOptions
-    );
-    let res = await raw.json();
+    let res = await axios({
+      method: "post",
+      url: "https://accounts.spotify.com/api/token",
+      headers: {
+        Authorization: `Basic ${encodedSecret}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      data: "grant_type=client_credentials",
+    });
+
     return res;
   } catch (e) {
     console.error(e);
@@ -52,27 +37,18 @@ const getPlaylistId = async (
   let endpointUrl = `https://api.spotify.com/v1/users/${userId}/playlists?limit=${limit}&offset=${offset}`;
   let auth = await getAuthToken();
 
-  var myHeaders = new Headers();
-  myHeaders.append("Authorization", "Bearer " + auth.access_token);
-
-  var requestOptions = {
-    method: "GET",
-    headers: myHeaders,
-    redirect: "follow",
-  };
-
   try {
-    let raw = await fetch(endpointUrl, requestOptions);
-    if (!raw.ok) {
-      return {
-        error: "No Playlist",
-        msg: `Could not locate playlist for user: ${userId}.`,
-      };
-    }
-    let res = await raw.json();
+    let res = await axios({
+      method: "get",
+      url: endpointUrl,
+      headers: {
+        Authorization: `Bearer ${auth.data.access_token}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
 
     let playlistEndpoint;
-    for (playlist of res.items) {
+    for (playlist of res.data.items) {
       playlist.name === playlistName
         ? (playlistEndpoint = playlist.tracks.href)
         : "";
@@ -89,32 +65,23 @@ const getPlaylistItems = async (endpointUrl) => {
     return endpointUrl;
   }
   let auth = await getAuthToken();
-  var myHeaders = new Headers();
-
-  var myHeaders = new Headers();
-  myHeaders.append("Authorization", "Bearer " + auth.access_token);
-
-  var requestOptions = {
-    method: "GET",
-    headers: myHeaders,
-    redirect: "follow",
-  };
 
   let allItems = [];
   while (true) {
     try {
-      let raw = await fetch(endpointUrl, requestOptions);
-      if (!raw.ok) {
-        return {
-          error: "Lost Playlist",
-          msg: `Located playlist for user: ${userId}, but something went wrong.`,
-        };
-      }
-      let res = await raw.json();
-      endpointUrl = res.next;
-      let newItems = res.items;
+      let res = await axios({
+        method: "get",
+        url: endpointUrl,
+        headers: {
+          Authorization: `Bearer ${auth.data.access_token}`,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
+
+      endpointUrl = res.data.next;
+      let newItems = res.data.items;
       allItems = allItems.concat(newItems);
-      if (res.next === null) {
+      if (res.data.next === null) {
         break;
       }
     } catch (e) {
@@ -126,27 +93,20 @@ const getPlaylistItems = async (endpointUrl) => {
 };
 
 const getDisplayName = async (userId) => {
-  console.log(userId);
+  console.log("getting display name for:", userId);
   let endpointUrl = `https://api.spotify.com/v1/users/${userId}`;
   let auth = await getAuthToken();
-  console.log('displayName');
-  console.log(auth);
-  var myHeaders = new Headers();
-  myHeaders.append("Authorization", "Bearer " + auth.access_token);
-
-  var requestOptions = {
-    method: "GET",
-    headers: myHeaders,
-    redirect: "follow",
-  };
   try {
-    let raw = await fetch(endpointUrl, requestOptions);
-    if (!raw.ok) {
-      return { error: "No User", msg: `Could not locate user: ${userId}.` };
-    }
-    let res = await raw.json();
+    let res = await axios({
+      method: "get",
+      url: endpointUrl,
+      headers: {
+        Authorization: `Bearer ${auth.data.access_token}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
 
-    return res.display_name;
+    return res.data.display_name;
   } catch (e) {
     console.error(e);
   }
@@ -154,18 +114,10 @@ const getDisplayName = async (userId) => {
 
 // this processes the data down to a useable object
 const processApiData = async (userId) => {
-
   try {
-    console.log('here');
     let displayName = await getDisplayName(userId);
-    console.log('here2');
     let playlistUrl = await getPlaylistId(userId);
-    console.log('here3');
     let playlistItems = await getPlaylistItems(playlistUrl);
-
-    console.log(`displayName: ${displayName}`);
-    console.log(`playlistUrl: ${playlistUrl}`);
-    console.log(`playlistItems: ${playlistItems}`);
 
     for (let res of [displayName, playlistUrl, playlistItems]) {
       if (res.hasOwnProperty("error")) {
@@ -193,10 +145,12 @@ const processApiData = async (userId) => {
     console.log({ tracks });
     return tracks;
   } catch (e) {
-    return { error: "No Tracks", msg: `Error: Did not receive track data from at least 1 user. Please ensure all User ID's are correct and that the 'publicLiked' playlists contain track data.` };
+    return {
+      error: "No Tracks",
+      msg: `Error: Did not receive track data from at least 1 user. Please ensure all User ID's are correct and that the 'publicLiked' playlists contain track data.`,
+    };
   }
 };
-
 
 const getAllData = async (userArray) => {
   let apiCalls = [];
@@ -216,4 +170,4 @@ const getAllData = async (userArray) => {
   }
 };
 
-module.exports = getAllData
+module.exports = getAllData;

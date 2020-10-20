@@ -23,7 +23,8 @@ export default function CollectUsers() {
   }
 
   async function requestInfo() {
-    let users = getUsers;
+    let users = getUsers();
+
     await axios({
       method: "post",
       url: "http://localhost:5000/guest/analyse",
