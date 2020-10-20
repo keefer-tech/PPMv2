@@ -8,6 +8,7 @@ import Guest from "./scenes/Guest.js";
 import User from "./scenes/User.js";
 import MainTitle from "./components/Headers/MainTitle";
 import GuestVisual from "./scenes/GuestVisual";
+import Footer from "./components/Headers/Footer";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/guest/:playlist" component={GuestVisual} />
         <Route path="/user" component={User} />
       </Router>
+      <Footer />
     </div>
   );
 }
