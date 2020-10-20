@@ -10,7 +10,6 @@ import MainTitle from "./components/Headers/MainTitle";
 import GuestVisual from "./scenes/GuestVisual";
 import Footer from "./components/Headers/Footer";
 import NotFoundPage from "./scenes/NotFound";
-// import { Switch } from "react-router-dom/cjs/react-router-dom.min";
 
 function App() {
   return (
