@@ -5,6 +5,10 @@ function addOrUpdateUser(user) {
 
   const newUser = new UserModel(user)
 
+
+  //TODO this exist call is redundant, I should just fetch the user and see if it is true or not
+
+
   UserModel.exists({username: user.username}, async (err, res) => {
     if (err) {
       // log the error
@@ -36,11 +40,11 @@ async function getUserFromDb(username) {
   try {
     return await UserModel.findOne({username})
   } catch (error) {
-    console.log(`Error in getRefreshToken: ${error}`);
+    console.log(`Error in getUserFromDb: ${error}`);
   }
 }
 
 module.exports = {
   addOrUpdateUser,
-  getUserFromDb
+  getUserFromDb,
 }

@@ -2,8 +2,10 @@ const express = require("express");
 const router = express.Router();
 const querystring = require("querystring");
 const request = require("request");
-require("dotenv").config();
+const faker = require('faker');
 
+
+require("dotenv").config();
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REDIRECT_URI =
@@ -11,9 +13,9 @@ const REDIRECT_URI =
 const STATE_KEY = "spotify_auth_state";
 
 
-const { setOptions, generateRandomString, refreshAccessToken } = require('../utils/utils');
+const { setOptions, generateRandomString, refreshAccessToken, getPlaylistItems } = require('../utils/utils');
 const getAllData = require("../utils/utils.guest");
-const { addOrUpdateUser } = require("../utils/utils.model");
+const { addOrUpdateUser, getUserFromDb } = require("../utils/utils.model");
 
 
 
@@ -119,7 +121,7 @@ router.get("/callback", function (req, res) {
 
 // GET FIRST 50 PLAYLISTS FROM AUTHORIZED USER
 
-router.post('/compare', async (req, res) => {
+router.post('/user/compare', async (req, res) => {
 
   // get the username and access token from the params
   let { username } = req.body
@@ -143,7 +145,6 @@ router.post('/compare', async (req, res) => {
         trackLink: e.tracks.href
     }))
 
-    // send the current user playlists to the DB
     res.send(playlists)
   });
 })
@@ -162,6 +163,11 @@ router.post('/friend/playlist', async (req, res) => {
   let offset = 0
 
   // send the friends username to the DB
+  // first get the user, update here, then send to addOrUpdateUser
+  let user = await getUserFromDb(username)
+  user.friends.push(friend_username)
+  // update user on DB
+  await addOrUpdateUser(user)
 
   // get the first 50 playlists from the user
   let playListUrl = `https://api.spotify.com/v1/users/${friend_username}/playlists?limit=${limit}&offset=${offset}`
@@ -179,7 +185,6 @@ router.post('/friend/playlist', async (req, res) => {
         public: e.public, 
         trackLink: e.tracks.href
     }))
-    // send the friends playlists to the DB
 
     res.send(friendPlaylists)
   });
@@ -188,7 +193,27 @@ router.post('/friend/playlist', async (req, res) => {
 
 
 // GET ALL SONGS FROM MULTIPLE PLAYLISTS
-// 
+
+router.post('/user/friend/compare', async (req, res) => {
+  
+  // this will be an array of playlist ID strings
+  let { playlistArray, username } = req.body
+
+  // get random playlist name from faker
+  let playlistName = `ppm-${faker.vehicle.color()}-${faker.random.word()}-${faker.vehicle.model()} `
+  console.log(playlistName);
+
+  // redirect to playlist page and show loading on FE
+  // res.redirect(`http://localhost:3000/user/friend/compare/${playlistName}`)
+
+  // make api calls to get data
+  // this will take some time
+  let filteredTracks = await getPlaylistItems(playlistArray, username) 
+
+
+  // send the data back to front end, I hope this works
+  res.send(filteredTracks)
+})
 
 
 
@@ -208,7 +233,6 @@ router.post('/guest/analyse', async (req, res) => {
 
   // get the username and access token from the params
   let { userArray } = req.body
-  let userArray
   let data = await getAllData(userArray)
   res.send(data)
 

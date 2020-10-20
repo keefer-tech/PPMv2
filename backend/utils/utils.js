@@ -1,5 +1,5 @@
 const request = require("request");
-const querystring = require("querystring");
+// const querystring = require("querystring");
 const axios = require('axios')
 
 require("dotenv").config();
@@ -70,9 +70,66 @@ async function refreshAccessToken(username) {
 }
 
 
+
+
+async function getAllPlaylistItems(playlistArray, username) {
+
+  let access_token = await refreshAccessToken(username)
+  let limit = 100
+  let market = 'AU'
+  let offset = 0
+  let items = []
+
+  // while (true) {
+    // let playListUrl = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?market=${market}&limit=${limit}&offset=${offset}`
+    // let playListOptions = setOptions(playListUrl, access_token)
+
+    //     // use the access token to access the Spotify Web API
+    // request.get(playListOptions, (error, response, body) => {
+    //   // console.log(response);
+    //   // get the wanted data out of the body sent back from spotify
+    //   items = body.items.map(e => ({
+    //       // name: e.name, 
+    //       // id: e.id, 
+    //       // link: e.href, 
+    //       // public: e.public, 
+    //       // trackLink: e.tracks.href
+    //   }))
+    
+    // }
+    // break
+  // }
+
+
+  return items
+  
+}
+
+
+
+async function getAllDataForGuest(req, res, next) {
+    // Process the data received in req.body
+    // instead of res.redirect('/');
+    let { userArray } = req.body
+    let data = await getAllData(userArray)
+    req.dataProcessed = data;
+    return next();
+}
+
+
+async function getAllDataForGuest(req, res) {
+  // Process the data received in req.body
+  // instead of res.redirect('/');
+  let { dataProcessed } = req.body
+  res.send(dataProcessed)
+}
+
+
+
 module.exports = { 
   setOptions,
   generateRandomString,
-  refreshAccessToken
+  refreshAccessToken,
+  getAllPlaylistItems
 }
 
