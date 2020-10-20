@@ -1,4 +1,5 @@
 const UserModel = require('../models/user.model');
+const GuestModel = require('../models/guest.model');
 
 
 function addOrUpdateUser(user) {
@@ -32,15 +33,60 @@ function addOrUpdateUser(user) {
 }
 
 
-async function getUserFromDb(username) {
+function getUserFromDb(username) {
   try {
-    return await UserModel.findOne({username})
+    return UserModel.findOne({username})
   } catch (error) {
     console.log(`Error in getRefreshToken: ${error}`);
   }
 }
 
+
+
+
+function getPlaylistFromGuestDb(playlistName) {
+  try {
+    return GuestModel.findOne({playlistName})
+  } catch (error) {
+    console.log(`Error in getPlaylistFromDb: ${error}`);
+  }
+}
+
+
+function checkIfPlaylistNameExists(playlistName) {
+  try {
+    GuestModel.exists({playlistName}, (err, res) => {
+      if (err) {
+        console.log(`Error while checking if playlist name exists on DB. Error: ${error}`);
+      } else {
+        return res // 'res' should be a boolean
+      }
+    })
+  } catch (error) {
+    console.log(`Error in checkIfPlaylistNameExists: ${error}`);
+  }
+}
+
+
+function savePlaylistToGuestDb(obj) {
+
+  const newGuestPlaylist = new GuestModel(obj)
+
+  try {
+    await newGuestPlaylist.save()
+    console.log('added playlist to Guest DB');
+  } catch (error) {
+    console.log(`Error while adding new Playlist to Guest DB. Error: ${error}`);
+  }
+}
+
+
+
+
 module.exports = {
   addOrUpdateUser,
-  getUserFromDb
+  getUserFromDb,
+  getPlaylistFromGuestDb,
+  checkIfPlaylistNameExists,
+  savePlaylistToGuestDb
 }
