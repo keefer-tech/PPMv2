@@ -24,7 +24,7 @@ export default function Tutorial() {
               side of this site.
             </p>
             <p className="is-italic">
-              Your friends will also need ot provide you with their usernames as
+              Your friends will also need to provide you with their usernames as
               well, so make sure they do this as well.
             </p>
           </div>
@@ -63,7 +63,7 @@ export default function Tutorial() {
             </p>
             <p className="is-italic">
               Keep in mind your friends will also need to to this so we can find
-              there music to compare as well!
+              their music to compare as well!
             </p>
           </div>
         </div>

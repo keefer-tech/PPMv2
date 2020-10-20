@@ -10,7 +10,7 @@ export default function Guest() {
         <div className="tile is-vertical is-4">
           <div className="tile">
             <div className="tile is-parent notification is-dark is-vertical mr-1">
-              <h1 className="title">User's to compare:</h1>
+              <h1 className="title">Users to compare:</h1>
               <CollectUsers />
             </div>
           </div>

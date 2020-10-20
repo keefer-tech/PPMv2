@@ -54,15 +54,9 @@ async function getPlaylistFromGuestDb(playlistName) {
 
 async function checkIfPlaylistNameExists(playlistName) {
   try {
-    await GuestModel.exists({ playlistName }, (err, res) => {
-      if (err) {
-        console.log(
-          `Error while checking if playlist name exists on DB. Error: ${error}`
-        );
-      } else {
-        return res; // 'res' should be a boolean
-      }
-    });
+    let playlist = await GuestModel.findOne({ playlistName });
+    if (playlist) return true
+    return false
   } catch (error) {
     console.log(`Error in checkIfPlaylistNameExists: ${error}`);
   }
