@@ -121,7 +121,7 @@ const processApiData = async (userId) => {
 
     for (let res of [displayName, playlistUrl, playlistItems]) {
       if (res.hasOwnProperty("error")) {
-        console.log({ res });
+        // console.log({ res });
         return res;
       }
     }
@@ -142,7 +142,7 @@ const processApiData = async (userId) => {
       };
       tracks.push(track);
     });
-    console.log({ tracks });
+    // console.log({ tracks });
     return tracks;
   } catch (e) {
     return {

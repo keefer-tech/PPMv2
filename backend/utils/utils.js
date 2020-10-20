@@ -109,9 +109,9 @@ function generatePlaylistName() {
   return playlistName;
 }
 
-function sortPlaylistsIntoChartData(data) {
+function sortPlaylistsIntoChartData(filteredData) {
 
-  let filteredData = filterByCommonArtists(data)
+  // let filteredData = filterByCommonArtists(data)
 
   let chartData = {
     pie: {
