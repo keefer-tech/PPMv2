@@ -46,6 +46,7 @@ async function getUserFromDb(username) {
 async function getPlaylistFromGuestDb(playlistName) {
   try {
     let playlist = await GuestModel.findOne({ playlistName });
+    console.log(playlist);
     return playlist;
   } catch (error) {
     console.log(`Error in getPlaylistFromDb: ${error}`);
@@ -55,8 +56,8 @@ async function getPlaylistFromGuestDb(playlistName) {
 async function checkIfPlaylistNameExists(playlistName) {
   try {
     let playlist = await GuestModel.findOne({ playlistName });
-    if (playlist) return true
-    return false
+    if (playlist) return true;
+    return false;
   } catch (error) {
     console.log(`Error in checkIfPlaylistNameExists: ${error}`);
   }

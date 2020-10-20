@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const request = require("request");
+const querystring = require("querystring");
 require("dotenv").config();
 
 const CLIENT_ID = process.env.CLIENT_ID;
@@ -252,14 +253,19 @@ router.post("/guest/analyse", async (req, res) => {
   await savePlaylistToGuestDb(objectToSaveToGuestDb);
 
   // save that data to the guest model with a playlist name
-  res.redirect(`http://localhost:3000/guest/${playlistName}`);
+  res.send({ redirect: `/guest/${playlistName}` });
 });
 
 router.get("/data/:playlistName", async (req, res) => {
   let { playlistName } = req.params;
 
+  console.log({ playlistName });
+
   let playlistData = await getPlaylistFromGuestDb(playlistName);
-  let chartData = await sortPlaylistsIntoChartData(playlistData);
+  let chartData = await sortPlaylistsIntoChartData(playlistData.data);
+
+  console.log({ playlistData });
+  console.log({ chartData });
 
   res.send(chartData);
 });

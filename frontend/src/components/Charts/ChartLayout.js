@@ -1,88 +1,53 @@
-import Axios from "axios";
-import React, { useEffect } from "react";
-import Chart from "chartjs";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+// import Chart from "chartjs";
+import { Bar, Line, Pie, Radar } from "react-chartjs-2";
 import { useParams } from "react-router-dom";
 
 export default function ChartLayout() {
   let { playlist } = useParams();
 
-  console.log(playlist);
+  const [pieObject, setPieObject] = useState({});
+  const [barObject, setBarObject] = useState({});
+  const [lineObject, setLineObject] = useState({});
+  const [radarObject, setRadarObject] = useState({});
 
-  // store the state of the data in usestate
-  // use useEffect to make the axios call to the backend which fetches you the data
-  // update state in useeffect
-  // react will re-render the page
-  async function getChartData(playlist) {
-    let data = await Axios({
-      method: "get",
-      url: `http://localhost:5000/data/${playlist}`,
-    });
-    return data;
-  }
-
-  function populateCharts(data) {
-    let charts = Array.from(document.getElementsByClassName("chartTarget"));
-    for (let chart of charts) {
-      let canvas = chart.getContext("2d");
-      switch (chart.id) {
-        case "PieChart":
-          new Chart(canvas, data.pie);
-          break;
-        case "BarChart":
-          new Chart(canvas, data.bar);
-          break;
-        case "LineChart":
-          new Chart(canvas, data.line);
-          break;
-        case "RadarChart":
-          new Chart(canvas, data.radar);
-          break;
-        default:
-          console.log("No Charts!");
-      }
-    }
-  }
-
-  let chartData = getChartData(playlist);
-
-  useEffect(() => populateCharts(chartData), []);
+  useEffect(() => {
+    const fetchData = async () => {
+      let chartData = await axios.get(`http://localhost:5000/data/${playlist}`);
+      console.log({ chartData });
+      setPieObject(chartData.data.pie);
+      setBarObject(chartData.data.bar);
+      setLineObject(chartData.data.line);
+      setRadarObject(chartData.data.radar);
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className="columns notification is-dark is-centered">
       <div className="column">
         <div className="notification is-success m-2">
-          <canvas
-            className="chartTarget box"
-            id="PieChart"
-            width="150"
-            height="150"
-          ></canvas>
+          <div className="box">
+            <Pie data={pieObject.data} options={pieObject.options} />
+          </div>
         </div>
         <div className="notification is-success m-2">
-          <canvas
-            className="chartTarget box"
-            id="BarChart"
-            width="150"
-            height="150"
-          ></canvas>
+          <div className="box">
+            <Bar data={barObject.data} options={barObject.options} />
+          </div>
         </div>
       </div>
       <div className="column">
         <div className="notification is-success m-2">
-          <canvas
-            className="chartTarget box"
-            id="LineChart"
-            width="150"
-            height="150"
-          ></canvas>
+          <div className="box">
+            <Line data={lineObject.data} options={lineObject.options} />
+          </div>
         </div>
         <div className="notification is-success m-2">
-          <canvas
-            className="chartTarget box"
-            id="RadarChart"
-            width="150"
-            height="150"
-          ></canvas>
+          <div className="box">
+            <Radar data={radarObject.data} options={radarObject.options} />
+          </div>
         </div>
       </div>
     </div>

@@ -25,7 +25,7 @@ export default function CollectUsers() {
   async function requestInfo() {
     let users = getUsers();
 
-    await axios({
+    let res = await axios({
       method: "post",
       url: "http://localhost:5000/guest/analyse",
       headers: {},
@@ -33,6 +33,12 @@ export default function CollectUsers() {
         users: users,
       },
     });
+
+    if (res) {
+      window.location.href = res.data.redirect;
+    } else {
+      window.location.href = "whoops";
+    }
   }
 
   return (
