@@ -12,7 +12,7 @@ function App() {
     <div className="App">
       <Router>
         <Route path="/" exact component={Index} />
-        <Route path="/guest/:playlist" component={ChartLayout} />
+        <Route path="/guest/:playlist" component={<ChartLayout />} />
         <Route path="/guest" component={Guest} />
         <Route path="/user" component={User} />
       </Router>
