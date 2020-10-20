@@ -1,4 +1,4 @@
-const filterByCommonArtists = (data) => {
+ const filterByCommonArtists = (data) => {
   let commonArrays = [];
   let flatData = data.flat();
 
