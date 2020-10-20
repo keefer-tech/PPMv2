@@ -227,11 +227,9 @@ router.post("/guest/analyse", async (req, res) => {
 
   // generate playlist name
   let playlistName = await generatePlaylistName();
-  console.log({ playlistName });
 
   // check if playlistName exists
   let bool = await checkIfPlaylistNameExists(playlistName);
-  console.log("Does Playlist Name exist?:", bool);
 
   // if the name does exist then generate a new one
   // I'm not doing a loop here because I can't be bothered for now
@@ -247,25 +245,19 @@ router.post("/guest/analyse", async (req, res) => {
     data: data,
     users: userArray.length,
   };
-  console.log({ objectToSaveToGuestDb });
 
   // save object to DB
   await savePlaylistToGuestDb(objectToSaveToGuestDb);
 
-  // save that data to the guest model with a playlist name
   res.send({ redirect: `/guest/${playlistName}` });
 });
 
 router.get("/data/:playlistName", async (req, res) => {
   let { playlistName } = req.params;
 
-  console.log({ playlistName });
-
-  let playlistData = await getPlaylistFromGuestDb(playlistName);
-  let chartData = await sortPlaylistsIntoChartData(playlistData.data);
-
-  console.log({ playlistData });
-  console.log({ chartData });
+  let playlist = await getPlaylistFromGuestDb(playlistName);
+  let playlistData = playlist.data
+  let chartData = await sortPlaylistsIntoChartData(playlistData);
 
   res.send(chartData);
 });

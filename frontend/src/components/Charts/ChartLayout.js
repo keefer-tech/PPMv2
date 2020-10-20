@@ -12,6 +12,11 @@ export default function ChartLayout() {
   const [lineObject, setLineObject] = useState({});
   const [radarObject, setRadarObject] = useState({});
 
+  // phil = 22nllj3rpfhvzlgt5hin5aqra
+  // tyler = tylerhall12
+  // simon = 1231189291
+  // keefer = 12179586444
+
   useEffect(() => {
     const fetchData = async () => {
       let chartData = await axios.get(`http://localhost:5000/data/${playlist}`);
@@ -22,7 +27,7 @@ export default function ChartLayout() {
       setRadarObject(chartData.data.radar);
     };
     fetchData();
-  }, []);
+  }, [playlist]);
 
   return (
     <div className="columns notification is-dark is-centered">
