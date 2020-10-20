@@ -208,7 +208,6 @@ router.post('/guest/analyse', async (req, res) => {
 
   // get the username and access token from the params
   let { userArray } = req.body
-  let userArray
   let data = await getAllData(userArray)
   res.send(data)
 

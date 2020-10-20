@@ -70,9 +70,16 @@ async function refreshAccessToken(username) {
 }
 
 
+
+function generatePlaylistName() {
+  
+}
+
+
 module.exports = { 
   setOptions,
   generateRandomString,
-  refreshAccessToken
+  refreshAccessToken,
+  generatePlaylistName
 }
 
