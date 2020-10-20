@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const querystring = require("querystring");
 const request = require("request");
 require("dotenv").config();
 
@@ -220,16 +219,18 @@ router.post("/user/friend/compare", async (req, res) => {
 router.post("/guest/analyse", async (req, res) => {
   // get the username and access token from the params
 
-  let { userArray } = req.body;
+  let userArray = req.body.users;
 
   // get all the tracks from the 2 publicLiked playlists
   let data = await getAllData(userArray);
 
   // generate playlist name
   let playlistName = await generatePlaylistName();
+  console.log({ playlistName });
 
   // check if playlistName exists
-  let bool = await checkIfPlaylistNameExists();
+  let bool = await checkIfPlaylistNameExists(playlistName);
+  console.log("Does Playlist Name exist?:", bool);
 
   // if the name does exist then generate a new one
   // I'm not doing a loop here because I can't be bothered for now
@@ -237,19 +238,21 @@ router.post("/guest/analyse", async (req, res) => {
   if (bool) {
     playlistName = await generatePlaylistName();
   }
+  console.log(`playlistName: ${playlistName}`);
 
   // create object to save to DB
   let objectToSaveToGuestDb = {
-    playlistName,
-    data,
+    playlistName: playlistName,
+    data: data,
     users: userArray.length,
   };
+  console.log({ objectToSaveToGuestDb });
 
   // save object to DB
   await savePlaylistToGuestDb(objectToSaveToGuestDb);
 
   // save that data to the guest model with a playlist name
-  res.redirect(`/guest/${playlistName}`);
+  res.redirect(`http://localhost:3000/guest/${playlistName}`);
 });
 
 router.get("/data/:playlistName", async (req, res) => {

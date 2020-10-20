@@ -34,25 +34,27 @@ function addOrUpdateUser(user) {
   });
 }
 
-function getUserFromDb(username) {
+async function getUserFromDb(username) {
   try {
-    return UserModel.findOne({ username });
+    let user = await UserModel.findOne({ username });
+    return user;
   } catch (error) {
     console.log(`Error in getUserFromDb: ${error}`);
   }
 }
 
-function getPlaylistFromGuestDb(playlistName) {
+async function getPlaylistFromGuestDb(playlistName) {
   try {
-    return GuestModel.findOne({ playlistName });
+    let playlist = await GuestModel.findOne({ playlistName });
+    return playlist;
   } catch (error) {
     console.log(`Error in getPlaylistFromDb: ${error}`);
   }
 }
 
-function checkIfPlaylistNameExists(playlistName) {
+async function checkIfPlaylistNameExists(playlistName) {
   try {
-    GuestModel.exists({ playlistName }, (err, res) => {
+    await GuestModel.exists({ playlistName }, (err, res) => {
       if (err) {
         console.log(
           `Error while checking if playlist name exists on DB. Error: ${error}`
@@ -66,11 +68,11 @@ function checkIfPlaylistNameExists(playlistName) {
   }
 }
 
-function savePlaylistToGuestDb(obj) {
+async function savePlaylistToGuestDb(obj) {
   const newGuestPlaylist = new GuestModel(obj);
 
   try {
-    newGuestPlaylist.save();
+    await newGuestPlaylist.save();
     console.log("added playlist to Guest DB");
   } catch (error) {
     console.log(`Error while adding new Playlist to Guest DB. Error: ${error}`);
