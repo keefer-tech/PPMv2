@@ -18,12 +18,14 @@ export default function ChartLayout() {
 
   useEffect(() => {
     const fetchData = async () => {
-      let chartData = await axios.get(`http://localhost:5000/data/${playlist}`);
-      console.log({ chartData });
-      setPieObject(chartData.data.pie);
-      setBarObject(chartData.data.bar);
-      setLineObject(chartData.data.line);
-      setRadarObject(chartData.data.radar);
+      let resp = await axios.get(`http://localhost:5000/data/${playlist}`);
+      let chartData = resp.data.chartData
+      let playlistData = resp.data.filteredData
+      console.log({playlistData});
+      setPieObject(chartData.pie);
+      setBarObject(chartData.bar);
+      setLineObject(chartData.line);
+      setRadarObject(chartData.radar);
     };
     fetchData();
   }, [playlist]);

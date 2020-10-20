@@ -68,6 +68,7 @@ export default function Index() {
 
                   <button onClick={getPlaylists}>get my plalists</button>
                   <button onClick={getFriendPlaylist}>get friends playlist</button>
+
                 </div>
               </div>
             </div>
