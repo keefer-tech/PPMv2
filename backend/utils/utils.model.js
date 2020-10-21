@@ -73,10 +73,20 @@ async function savePlaylistToGuestDb(obj) {
   }
 }
 
+async function getAllPlaylistNames() {
+ try {
+    let playlistNames = await GuestModel.find({}, {_id:0, playlistName:1});
+    return playlistNames
+ } catch (error) {
+   console.log(`Error while fetching all playlist names in getAllPlaylistNames: ${error}`);
+ }
+}
+
 module.exports = {
   addOrUpdateUser,
   getUserFromDb,
   getPlaylistFromGuestDb,
   checkIfPlaylistNameExists,
   savePlaylistToGuestDb,
+  getAllPlaylistNames
 };

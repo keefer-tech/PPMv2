@@ -6,7 +6,7 @@ export default function ChartLayout({
 }) {
   return (
     <div className="tile">
-      <div className="tile is-vertical">
+      <div className="tile is-vertical column">
         <div className="tile is-parent notification is-success m-2">
           <div className="tile is-child notification is-light">
             <h4 className="subtitle is-4">Tracks Contributed</h4>
@@ -20,7 +20,7 @@ export default function ChartLayout({
           </div>
         </div>
       </div>
-      <div className="tile is-vertical">
+      <div className="tile is-vertical column">
         <div className="tile is-parent notification is-success m-2">
           <div className="tile is-child notification is-light">
             <h4 className="subtitle is-4">Favourite Decades</h4>

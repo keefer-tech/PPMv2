@@ -26,6 +26,7 @@ const {
   checkIfPlaylistNameExists,
   savePlaylistToGuestDb,
   getPlaylistFromGuestDb,
+  getAllPlaylistNames,
 } = require("../utils/utils.model");
 
 // LOG THE USER INTO THEIR SPOTIFY ACCOUNT
@@ -257,12 +258,13 @@ router.post("/guest/analyse", async (req, res) => {
 router.get("/data/:playlistName", async (req, res) => {
   let { playlistName } = req.params;
 
+  let allPlaylistNames = await getAllPlaylistNames()
   let playlist = await getPlaylistFromGuestDb(playlistName);
   let playlistData = playlist.data
   let filteredData = filterByCommonArtists(playlistData)
   let chartData = await sortPlaylistsIntoChartData(filteredData);
 
-  res.send({filteredData, chartData});
+  res.send({filteredData, chartData, allPlaylistNames});
 });
 
 module.exports = {
