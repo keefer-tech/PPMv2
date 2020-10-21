@@ -42,21 +42,32 @@ export default function GuestVisual() {
     fetchData();
   }, [playlist]);
   return (
-    <div className="tile is-ancestor notification is-dark ">
-      <div className="tile is-parent is-vertical is-3">
-        <div className="tile is-child is-vertical">
-          <h4 className="subtitle is-4">{songs.length} bangers found on playlist:</h4>
-          <h3 className="title is-3">{playlist}</h3>
-          <div className="box vh-65 scrollable">{songs}</div>
+    <div className="tile is-ancestor notification is-dark vh-85">
+      <div className="tile is-vertical is-3">
+        <div className="tile is-parent is-vertical">
+          <div className="container">
+            <h4 className="subtitle is-4">
+              {songs.length} bangers found on playlist:
+            </h4>
+            <h3 className="title is-3">{playlist}</h3>
+          </div>
+          <div className="box scrollable vh-70">{songs}</div>
         </div>
       </div>
-      <div className="tile is-parent is-vertical">
-        <div className="tile is-child">
-          <h4 className="subtitle is-4">Here's a breakdown of your playlist</h4>
-          <ChartLayout
-            chartData={{ pieObject, barObject, lineObject, radarObject }}
-          />
-          <PreviousPlaylists allPlaylistNames={allPlaylistNames}/>
+      <div className="tile is-vertical container">
+        <h4 className="subtitle is-4">Here's a breakdown of your playlist</h4>
+        <ChartLayout
+          chartData={{ pieObject, barObject, lineObject, radarObject }}
+        />
+      </div>
+      <div className="tile is-vertical is-2">
+        <div className="tile is-parent is-vertical">
+          <div className="container">
+            <h4 className="subtitle is-4">Here are the 15 most recent playlist breakdowns by others</h4>
+          </div>
+          <div className="scrollable vh-70">
+            <PreviousPlaylists allPlaylistNames={allPlaylistNames} />
+          </div>
         </div>
       </div>
     </div>
