@@ -111,8 +111,6 @@ function generatePlaylistName() {
 
 function sortPlaylistsIntoChartData(filteredData) {
 
-  // let filteredData = filterByCommonArtists(data)
-
   let chartData = {
     pie: {
       type: "pie",
