@@ -57,8 +57,14 @@ export default function GuestVisual() {
           chartData={{ pieObject, barObject, lineObject, radarObject }}
         />
       </div>
-      <div className=" notification is-info container tile is-vertical is-2">
-        <h4 className="subtitle is-4">See other's playlist breakdowns:</h4>
+      <div className="tile is-vertical is-2">
+        <div className="tile is-parent is-vertical">
+          <div className="container">
+            <h4 className="subtitle is-4">Here are some links to</h4>
+            <h3 className="title is-3">some other breakdowns</h3>
+          </div>
+          <div className="box scrollable vh-70">links here</div>
+        </div>
       </div>
     </div>
   );
