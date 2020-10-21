@@ -5,8 +5,16 @@
   overflow-x: hidden;
 }
 
-.vh-70 {
+.ht-100 {
+  height: 95%;
+}
+
+.vh-85 {
   height: 85vh;
+}
+
+.vh-70 {
+  height: 70vh;
 }
 .hpc-33 {
   height: 33%;
