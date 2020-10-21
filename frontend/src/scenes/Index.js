@@ -3,7 +3,7 @@ import HeroButton from "../components/Buttons/HeroButton";
 
 export default function Index() {
   return (
-    <div className="columns notification is-dark  vh-70 mr-1">
+    <div className="columns notification is-dark  vh-85 mr-1">
       <div className="column is-half ml-4 mr-1">
         <div className="tile is-child pt-6">
           <h1 className="title">Cool analytics with your music!</h1>
