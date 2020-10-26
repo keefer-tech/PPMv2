@@ -35,7 +35,7 @@ mongoose.connect(
   (err) => {
     if (err)
       console.log(`Error connecting to database, server not running`, err);
-    else console.log(`Connected to database: ${dbName}`);
+    else console.log(`Connected to database: ${dbConnection}`);
     // listen here because its successful
     const server = app.listen(port, () => {
       console.log("listening on port:" + port);
