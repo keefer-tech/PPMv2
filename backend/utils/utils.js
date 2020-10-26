@@ -3,7 +3,7 @@ const request = require("request");
 const axios = require("axios");
 const faker = require("faker");
 
-require("dotenv").config();
+if (!process.env.NODE_ENV) require("dotenv").config();
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 
@@ -104,13 +104,16 @@ async function getAllPlaylistItems(playlistArray, username) {
 
 function generatePlaylistName() {
   // get random playlist name from faker
-  let playlistName = `ppm-${faker.vehicle.color().replace(/\s/g, '')}-${faker.random.word().replace(/\s/g, '')}-${faker.vehicle.model().replace(/\s/g, '')}`;
+  let playlistName = `ppm-${faker.vehicle
+    .color()
+    .replace(/\s/g, "")}-${faker.random
+    .word()
+    .replace(/\s/g, "")}-${faker.vehicle.model().replace(/\s/g, "")}`;
   console.log(playlistName);
   return playlistName;
 }
 
 function sortPlaylistsIntoChartData(filteredData) {
-
   let chartData = {
     pie: {
       type: "pie",
