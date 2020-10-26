@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const request = require("request");
 const querystring = require("querystring");
-require("dotenv").config();
+if (!process.env.NODE_ENV) require("dotenv").config();
 
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
@@ -10,7 +10,7 @@ const REDIRECT_URI =
   process.env.REDIRECT_URI || "http://localhost:5000/callback";
 const STATE_KEY = "spotify_auth_state";
 
-const { filterByCommonArtists } = require("../utils/utils.chart")
+const { filterByCommonArtists } = require("../utils/utils.chart");
 const getAllData = require("../utils/utils.guest");
 
 const {
@@ -207,7 +207,7 @@ router.post("/user/friend/compare", async (req, res) => {
   // redirect to playlist page and show loading on FE
   // res.redirect(`http://localhost:3000/user/friend/compare/${playlistName}`)
   // res.send({ redirect: `/user/friend/compare/${playlistName}` });
-  
+
   // make api calls to get data
   // this will take some time
   let filteredTracks = await getPlaylistItems(playlistArray, username);
@@ -258,13 +258,13 @@ router.post("/guest/analyse", async (req, res) => {
 router.get("/data/:playlistName", async (req, res) => {
   let { playlistName } = req.params;
 
-  let allPlaylistNames = await getAllPlaylistNames()
+  let allPlaylistNames = await getAllPlaylistNames();
   let playlist = await getPlaylistFromGuestDb(playlistName);
-  let playlistData = playlist.data
-  let filteredData = filterByCommonArtists(playlistData)
+  let playlistData = playlist.data;
+  let filteredData = filterByCommonArtists(playlistData);
   let chartData = await sortPlaylistsIntoChartData(filteredData);
 
-  res.send({filteredData, chartData, allPlaylistNames});
+  res.send({ filteredData, chartData, allPlaylistNames });
 });
 
 module.exports = {
