@@ -28,7 +28,7 @@ export default function CollectUsers({ triggerLoading }) {
 
     let res = await axios({
       method: "post",
-      url: "/guest/analyse",
+      url: "https://ppmv2-api.herokuapp.com/guest/analyse",
       headers: {},
       data: {
         users: users,

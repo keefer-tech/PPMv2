@@ -9,7 +9,7 @@ export default function Index() {
           <h1 className="title">Cool analytics with your music!</h1>
           <div className="buttons are-large is-centered">
             <HeroButton
-              href={"/login"}
+              href={"https://ppmv2-api.herokuapp.com/login"}
               colour={"success"}
               name={"Authorise Spotify"}
             />

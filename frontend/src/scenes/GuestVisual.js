@@ -28,7 +28,7 @@ export default function GuestVisual() {
           filteredData: tracks,
           allPlaylistNames: allPlaylistNames,
         },
-      } = await axios.get(`https://ppmv2-api.herokuapp.com//data/${playlist}`);
+      } = await axios.get(`https://ppmv2-api.herokuapp.com/data/${playlist}`);
       setPieObject(data.pie);
       setBarObject(data.bar);
       setLineObject(data.line);
