@@ -23,8 +23,12 @@ export default function GuestVisual() {
   useEffect(() => {
     const fetchData = async () => {
       let {
-        data: { chartData: data, filteredData: tracks, allPlaylistNames: allPlaylistNames },
-      } = await axios.get(`http://localhost:5000/data/${playlist}`);
+        data: {
+          chartData: data,
+          filteredData: tracks,
+          allPlaylistNames: allPlaylistNames,
+        },
+      } = await axios.get(`https://ppmv2-api.herokuapp.com//data/${playlist}`);
       setPieObject(data.pie);
       setBarObject(data.bar);
       setLineObject(data.line);
@@ -63,7 +67,9 @@ export default function GuestVisual() {
       <div className="tile is-vertical is-2">
         <div className="tile is-parent is-vertical">
           <div className="container">
-            <h4 className="subtitle is-4">Here are the 15 most recent playlist breakdowns by others</h4>
+            <h4 className="subtitle is-4">
+              Here are the 15 most recent playlist breakdowns by others
+            </h4>
           </div>
           <div className="scrollable vh-70">
             <PreviousPlaylists allPlaylistNames={allPlaylistNames} />

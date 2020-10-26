@@ -62,7 +62,7 @@ router.get("/callback", function (req, res) {
 
   if (state === null || state !== storedState) {
     res.redirect(
-      "http://localhost:3000?" +
+      "https://ppmv2.netlify.app?" +
         querystring.stringify({
           error: "state_mismatch",
         })
@@ -110,11 +110,11 @@ router.get("/callback", function (req, res) {
           await addOrUpdateUser(user);
 
           // we can also pass the token to the browser to make requests from there
-          res.redirect(`http://localhost:3000/user`);
+          res.redirect(`https://ppmv2.netlify.app/user`);
         });
       } else {
         res.redirect(
-          "http://localhost:3000?" +
+          "https://ppmv2.netlify.app?" +
             querystring.stringify({
               error: "invalid_token",
             })
@@ -205,7 +205,7 @@ router.post("/user/friend/compare", async (req, res) => {
   let playlistName = await generatePlaylistName();
 
   // redirect to playlist page and show loading on FE
-  // res.redirect(`http://localhost:3000/user/friend/compare/${playlistName}`)
+  // res.redirect(`https://ppmv2.netlify.app/user/friend/compare/${playlistName}`)
   // res.send({ redirect: `/user/friend/compare/${playlistName}` });
 
   // make api calls to get data
