@@ -9,7 +9,7 @@ export default function Index() {
           <h1 className="title">Cool analytics with your music!</h1>
           <div className="buttons are-large is-centered">
             <HeroButton
-              href={"http://localhost:5000/login"}
+              href={"/login"}
               colour={"success"}
               name={"Authorise Spotify"}
             />

@@ -28,7 +28,7 @@ export default function CollectUsers({ triggerLoading }) {
 
     let res = await axios({
       method: "post",
-      url: "http://localhost:5000/guest/analyse",
+      url: "/guest/analyse",
       headers: {},
       data: {
         users: users,
